@@ -1,0 +1,21 @@
+### Folder logs ###
+logs/
+
+### Package Files ###
+*.jar
+*.war
+
+### Intellij IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### Maven ###
+target/
+
+### Spring Boot ###
+.mvn
+HELP.md
+mvnw
+mvnw.cmd
