@@ -1,0 +1,66 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Reviews</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">Reviews list:</h1>
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="row"></th>
+            <th scope="col">Full name</th>
+            <th scope="col">Review</th>
+            <th scope="col">Date added</th>
+            <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Administrator')">
+            <th scope="col">Show</th>
+                        </span></div>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="review, stat : ${reviewPage}">
+            <td><span th:text="${stat.index + 1}"/></td>
+            <td><span th:text="${review.user.surname} + ${review.user.name} + ${review.user.patronymic}"/></td>
+            <td><span th:text="${review.description}"/></td>
+            <td><span th:text="${review.created}"/></td>
+            <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Administrator')">
+            <td>
+                <form action="#" th:action="@{/private/reviews/update/{id}(id=${review.id})}"
+                      th:object="${show}" method="post">
+                    <input type="checkbox" name="show" onclick="submit();"
+                           th:checked="${review.show} ? 'checked'" th:value="'true'">
+                </form>
+            </td>
+                    </span></div>
+            <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Administrator')">
+            <form action="#" th:action="@{/private/reviews/delete/{id}(id=${review.id})}" method="post">
+                <td><input type="submit" class="btn btn-light btn-block" value="Delete"/></td>
+            </form>
+                    </span>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <!--<sec:authorize acces="hasRole('Administrator') and is Authenticated()"-->
+        <ul th:if="${reviewPage.totalPages > 0}" class="pagination justify-content-center">
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link" th:href="@{/reviews(size=${reviewPage.size}, page=${pageNumber})}"
+                   th:text="${pageNumber}"
+                   th:class="${pageNumber==reviewPage.number + 1} ? active"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

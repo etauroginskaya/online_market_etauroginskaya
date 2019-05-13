@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Add user</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <div class="row justify-content-center">
+        <form th:action="@{/private/users/add}" th:object="${user}" method="post" style="color: white">
+            <h1 class="h3 mb-3 font-weight-normal">Please enter in the properties of the new user:</h1>
+
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
+                Surname Error
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="surname">Surname</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" th:field="*{surname}">
+            </div>
+
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                Name Error
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="name">Name</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" th:field="*{name}">
+            </div>
+
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('patronymic')}"
+                 th:errors="*{patronymic}">Patronymic Error
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="patronymic">Patronymic</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1"
+                       th:field="*{patronymic}">
+            </div>
+
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
+                Email Error
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="email">Email</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" th:field="*{email}">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="roleName">Role</span>
+                </div>
+                <select th:field="*{role.id}">
+                    <option th:each="role : ${roles}"
+                            th:value="${role.id}"
+                            th:text="${role.name}"></option>
+                </select>
+            </div>
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <input type="submit" class="btn btn-lg btn-success btn-block" value="Save User"/>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
