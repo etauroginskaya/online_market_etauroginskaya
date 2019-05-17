@@ -9,6 +9,26 @@
 <div th:replace="fragments/header :: header"/>
 <div class="container">
     <h1 class="h3 mb-3 font-weight-normal">Reviews list:</h1>
+    <div th:if="${param.deleted}">
+        <div class="alert alert-success text-center">
+            Review deleted.
+        </div>
+    </div>
+    <div th:if="${param.not_deleted}">
+        <div class="alert alert-warning text-center">
+            Review not deleted!
+        </div>
+    </div>
+    <div th:if="${param.updated}">
+        <div class="alert alert-success text-center">
+            Status show successfully updated.
+        </div>
+    </div>
+    <div th:if="${param.not_updated}">
+        <div class="alert alert-warning text-center">
+            Status show not updated!
+        </div>
+    </div>
     <table class="table table-hover table-dark">
         <thead>
         <tr>
@@ -19,14 +39,15 @@
             <div sec:authorize="isAuthenticated()">
                     <span sec:authorize="hasAuthority('Administrator')">
             <th scope="col">Show</th>
-                        </span></div>
             <th scope="col"></th>
+                    </span>
+            </div>
         </tr>
         </thead>
         <tbody>
         <tr th:each="review, stat : ${reviewPage}">
             <td><span th:text="${stat.index + 1}"/></td>
-            <td><span th:text="${review.user.surname} + ${review.user.name} + ${review.user.patronymic}"/></td>
+            <td><span th:text="${review.user.surname} +' '+ ${review.user.name} +' '+ ${review.user.patronymic}"/></td>
             <td><span th:text="${review.description}"/></td>
             <td><span th:text="${review.created}"/></td>
             <div sec:authorize="isAuthenticated()">
@@ -51,8 +72,7 @@
     </table>
 
     <nav aria-label="Page navigation example">
-        <!--<sec:authorize acces="hasRole('Administrator') and is Authenticated()"-->
-        <ul th:if="${reviewPage.totalPages > 0}" class="pagination justify-content-center">
+         <ul th:if="${reviewPage.totalPages > 0}" class="pagination justify-content-center">
             <li class="page-item" th:each="pageNumber : ${pageNumbers}">
                 <a class="page-link" th:href="@{/reviews(size=${reviewPage.size}, page=${pageNumber})}"
                    th:text="${pageNumber}"

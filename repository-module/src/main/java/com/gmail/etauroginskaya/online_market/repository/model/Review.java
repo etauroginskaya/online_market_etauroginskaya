@@ -5,7 +5,7 @@ public class Review {
     private Long id;
     private String description;
     private String created;
-    private boolean show;
+    private boolean isShow;
     private User user;
 
     public Long getId() {
@@ -33,11 +33,11 @@ public class Review {
     }
 
     public boolean isShow() {
-        return show;
+        return isShow;
     }
 
     public void setShow(boolean show) {
-        this.show = show;
+        isShow = show;
     }
 
     public User getUser() {

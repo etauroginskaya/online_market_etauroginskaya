@@ -1,15 +1,14 @@
 package com.gmail.etauroginskaya.online_market.service.impl;
 
 import com.gmail.etauroginskaya.online_market.repository.UserRepository;
-import com.gmail.etauroginskaya.online_market.repository.model.Role;
 import com.gmail.etauroginskaya.online_market.repository.model.User;
-import com.gmail.etauroginskaya.online_market.service.UserService;
-import com.gmail.etauroginskaya.online_market.service.converter.RoleConverter;
+import com.gmail.etauroginskaya.online_market.service.EmailService;
 import com.gmail.etauroginskaya.online_market.service.converter.UserConverter;
 import com.gmail.etauroginskaya.online_market.service.exception.ServiceException;
-import com.gmail.etauroginskaya.online_market.service.model.RoleDTO;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
+import com.gmail.etauroginskaya.online_market.service.util.CoderUtil;
 import com.gmail.etauroginskaya.online_market.service.util.PassGenUtil;
+import com.gmail.etauroginskaya.online_market.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -34,15 +33,17 @@ public class UserServiceImpl implements UserService {
     private static final Integer PASSWORD_LENGTH = 8;
     private final UserRepository userRepository;
     private final UserConverter userConverter;
-    private final RoleConverter roleConverter;
     private final PassGenUtil passGenUtil;
+    private final CoderUtil coderUtil;
+    private final EmailService emailService;
 
     public UserServiceImpl(UserRepository userRepository, UserConverter userConverter,
-                           RoleConverter roleConverter, PassGenUtil passGenUtil) {
+                           PassGenUtil passGenUtil, CoderUtil coderUtil, EmailService emailService) {
         this.userRepository = userRepository;
         this.userConverter = userConverter;
-        this.roleConverter = roleConverter;
         this.passGenUtil = passGenUtil;
+        this.coderUtil = coderUtil;
+        this.emailService = emailService;
     }
 
     @Override
@@ -66,14 +67,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<UserDTO> getUsersInPage(Pageable pageable) {
+    public Page<UserDTO> getUsersPageByEmailAsc(Pageable pageable) {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 int pageSize = pageable.getPageSize();
                 int currentPage = pageable.getPageNumber();
                 int startItem = currentPage * pageSize;
-                int quantityUsers = userRepository.getQuantityUsers(connection);
+                int quantityUsers = userRepository.getQuantityUsersNotDeleted(connection);
                 List<User> users;
                 List<UserDTO> dtos;
                 if (quantityUsers < startItem) {
@@ -98,14 +99,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer deleteListUsers(List<Long> listID) {
+    public int deleteUsers(List<Long> listID) {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 List<Long> listIDForDelete = listID.stream()
                         .filter(id -> !id.equals(ID_UNVAILABLE_USER))
                         .collect(Collectors.toList());
-                Integer result = userRepository.deleteListUsers(connection, listIDForDelete);
+                int result = 0;
+                if (!listIDForDelete.isEmpty()) {
+                    result = userRepository.deleteUsers(connection, listIDForDelete);
+                }
                 connection.commit();
                 return result;
             } catch (SQLException e) {
@@ -121,15 +125,15 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer updateUserRole(Long userID, Long newRoleID) {
+        if (userID.equals(ID_UNVAILABLE_USER)) {
+            return null;
+        }
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                if (!userID.equals(ID_UNVAILABLE_USER)) {
-                    Integer result = userRepository.updateUserRole(connection, userID, newRoleID);
-                    connection.commit();
-                    return result;
-                }
-                return 0;
+                int result = userRepository.updateUserRole(connection, userID, newRoleID);
+                connection.commit();
+                return result;
             } catch (SQLException e) {
                 connection.rollback();
                 logger.error(e.getMessage(), e);
@@ -146,9 +150,13 @@ public class UserServiceImpl implements UserService {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                userDTO.setPassword(passGenUtil.getPassword(PASSWORD_LENGTH, userDTO.getEmail()));
+                String password = passGenUtil.getPassword(PASSWORD_LENGTH);
+                userDTO.setPassword(coderUtil.encode(password));
                 User userForSave = userConverter.fromDTO(userDTO);
                 userRepository.addUser(connection, userForSave);
+                String message = String.format("Hello %s!\n The new registered account is assigned a password: %s",
+                        userDTO.getName(), password);
+                emailService.sendMessage(userDTO.getEmail(), "Market account information", message);
                 connection.commit();
             } catch (SQLException e) {
                 connection.rollback();
@@ -162,35 +170,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<RoleDTO> getListRoles() {
+    public int updateUserPassword(Long id) {
         try (Connection connection = userRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                List<Role> roles = userRepository.getListRoles(connection);
-                List<RoleDTO> dtos = roles.stream()
-                        .map(roleConverter::toDTO)
-                        .collect(Collectors.toList());
-                connection.commit();
-                return dtos;
-            } catch (SQLException e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new ServiceException(TRANSACTION_ERROR_MESSAGE, e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(CONNECTION_ERROR_MESSAGE, e);
-        }
-    }
-
-    @Override
-    public Integer updateUserPassword(Long id) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                String userEmail = userRepository.getUserByID(connection, id).getEmail();
-                String genPassword = passGenUtil.getPassword(PASSWORD_LENGTH, userEmail);
-                Integer result = userRepository.updateUserPassword(connection, id, genPassword);
+                User user = userRepository.getUserByID(connection, id);
+                String password = passGenUtil.getPassword(PASSWORD_LENGTH);
+                int result = userRepository.updateUserPassword(connection, id, password);
+                String message = String.format("Hello %s!\n " +
+                        "Your password has been updated. New password: %s", user.getName(), password);
+                emailService.sendMessage(user.getEmail(), "Market account information", message);
                 connection.commit();
                 return result;
             } catch (SQLException e) {

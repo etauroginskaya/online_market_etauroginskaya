@@ -1,9 +1,9 @@
 package com.gmail.etauroginskaya.online_market.repository.impl;
 
-import com.gmail.etauroginskaya.online_market.repository.ReviewRepository;
-import com.gmail.etauroginskaya.online_market.repository.exception.DatabaseQueryException;
 import com.gmail.etauroginskaya.online_market.repository.model.Review;
 import com.gmail.etauroginskaya.online_market.repository.model.User;
+import com.gmail.etauroginskaya.online_market.repository.ReviewRepository;
+import com.gmail.etauroginskaya.online_market.repository.exception.DatabaseQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -58,7 +58,7 @@ public class ReviewRepositoryImpl extends ConnectionRepositoryImpl implements Re
     }
 
     @Override
-    public Integer getQuantityReviews(Connection connection) {
+    public int getQuantityReviews(Connection connection) {
         String sql = "SELECT COUNT(*) AS total FROM review WHERE deleted = 'false'";
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet rs = statement.executeQuery()) {
@@ -74,7 +74,7 @@ public class ReviewRepositoryImpl extends ConnectionRepositoryImpl implements Re
     }
 
     @Override
-    public void deleteListReviews(Connection connection, List<Review> reviews) {
+    public int deleteListReviews(Connection connection, List<Review> reviews) {
         List<Long> list = reviews.stream().map(Review::getId).collect(Collectors.toList());
         String sql = "UPDATE review SET deleted = true WHERE id IN (?)";
         sql = anyParams(sql, list.size());
@@ -88,6 +88,7 @@ public class ReviewRepositoryImpl extends ConnectionRepositoryImpl implements Re
                 logger.error("Deleting reviews failed, no row affected.");
                 throw new DatabaseQueryException("Deleting reviews failed, no row affected.");
             }
+            return affectedRows;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw new DatabaseQueryException(QUERY_ERROR_MESSAGE);
@@ -104,7 +105,7 @@ public class ReviewRepositoryImpl extends ConnectionRepositoryImpl implements Re
     }
 
     @Override
-    public void updateReviewStatusShow(Connection connection, Long id, Boolean newShowStatus) {
+    public int updateReviewStatusShow(Connection connection, Long id, boolean newShowStatus) {
         String sql = "UPDATE review SET `show` = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setBoolean(1, newShowStatus);
@@ -115,6 +116,7 @@ public class ReviewRepositoryImpl extends ConnectionRepositoryImpl implements Re
                 throw new DatabaseQueryException
                         (String.format("Updating status show review with id %s failed, no row affected.", id));
             }
+            return affectedRows;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw new DatabaseQueryException(QUERY_ERROR_MESSAGE);

@@ -1,30 +1,41 @@
 package com.gmail.etauroginskaya.online_market.service.impl;
 
 import com.gmail.etauroginskaya.online_market.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
+import com.gmail.etauroginskaya.online_market.service.exception.ServiceMailException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class EmailServiceImpl implements EmailService {
-    @Autowired
-    public JavaMailSender emailSender;
 
-    public void sendMessage(String to, String text) {
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(to);
-        message.setSubject("Information about account");
-        message.setText(text);
-        emailSender.send(message);
+    private static final Logger logger = LoggerFactory.getLogger(EmailServiceImpl.class);
+
+    private JavaMailSender mailSender;
+
+    @Value("${spring.mail.username}")
+    private String username;
+
+    public EmailServiceImpl(JavaMailSender mailSender) {
+        this.mailSender = mailSender;
     }
 
-    @Bean
-    public SimpleMailMessage templateSimpleMessage() {
+    public void sendMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
-        message.setText(
-                "Your account has been assigned a password of :\n%s\n");
-        return message;
+        message.setFrom(username);
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        try {
+            mailSender.send(message);
+            logger.info(String.format("Message to email %s successfully sent", to));
+        } catch (MailException e) {
+            logger.error(e.getMessage(), e);
+            throw new ServiceMailException(String.format("Message to email %s don't sent", to), e);
+        }
     }
 }

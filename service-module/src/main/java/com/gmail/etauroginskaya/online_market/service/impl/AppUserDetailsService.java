@@ -1,8 +1,8 @@
 package com.gmail.etauroginskaya.online_market.service.impl;
 
-import com.gmail.etauroginskaya.online_market.service.UserService;
 import com.gmail.etauroginskaya.online_market.service.model.AppUserPrincipal;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
+import com.gmail.etauroginskaya.online_market.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;

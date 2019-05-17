@@ -8,6 +8,11 @@
 <div th:replace="fragments/header :: header"/>
 <div class="container">
     <h1 class="h3 mb-3 font-weight-normal">Users list:</h1>
+    <div th:if="${param.added}">
+        <div class="alert alert-success text-center">
+            User successfully added.
+        </div>
+    </div>
     <div th:if="${param.updated}">
         <div class="alert alert-success text-center">
             User successfully updated.
@@ -18,6 +23,11 @@
             User not updated!
         </div>
     </div>
+    <div th:if="${param.unavailable_update}">
+        <div class="alert alert-info text-center">
+            Privileges of this user cannot be changed!
+        </div>
+    </div>
     <div th:if="${param.deleted}">
         <div class="alert alert-success text-center">
             User successfully deleted.
@@ -25,7 +35,7 @@
     </div>
     <div th:if="${param.not_deleted}">
         <div class="alert alert-warning text-center">
-            No users deleted!
+            Users not deleted!
         </div>
     </div>
     <table class="table table-hover table-dark">
@@ -42,7 +52,7 @@
         <tbody>
         <tr th:each="user, stat : ${userPage}">
             <td><span th:text="${stat.index + 1}"/></td>
-            <td><span th:text="${user.surname} + ${user.name} + ${user.patronymic}"/></td>
+            <td><span th:text="${user.surname} +' '+ ${user.name} +' '+ ${user.patronymic}"/></td>
             <td><span th:text="${user.email}"/></td>
             <td>
                 <div class="btn-group dropright">
@@ -52,7 +62,7 @@
                         <div th:each="role :  ${roles}">
                             <form th:method="post"
                                   th:action="@{/private/users/update(id=${user.id},roleID=${role.id},action=${model})}">
-                                <button type="submit" name="action" class="dropdown-item" value="role"
+                                <button type="submit" name="action" class="dropdown-item" value="ROLE"
                                         th:text="${role.name}"/>
                             </form>
                         </div>
@@ -63,7 +73,7 @@
                        form="delete" th:value="${user.id}"></td>
             <form action="#" th:action="@{/private/users/update(id=${user.id}, action=${model})}" method="post">
                 <td>
-                    <button type="submit" name="action" class="btn btn-secondary btn-block" value="password">
+                    <button type="submit" name="action" class="btn btn-secondary btn-block" value="PASSWORD">
                         Change password
                     </button>
                 </td>

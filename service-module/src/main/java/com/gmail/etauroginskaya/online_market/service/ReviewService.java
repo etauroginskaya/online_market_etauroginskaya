@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 public interface ReviewService {
-    Page<ReviewDTO> getReviewsInPage(Pageable pageable);
+    Page<ReviewDTO> getReviewsPage(Pageable pageable);
 
-    void updateStatusReview(Long id, Boolean newShowStatus);
+    int updateShowReview(Long id, boolean newShowStatus);
 
-    void deleteReview(Long id);
+    int deleteReview(Long id);
 }

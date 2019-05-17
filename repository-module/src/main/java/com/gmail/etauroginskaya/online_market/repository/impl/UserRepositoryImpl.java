@@ -1,9 +1,9 @@
 package com.gmail.etauroginskaya.online_market.repository.impl;
 
-import com.gmail.etauroginskaya.online_market.repository.UserRepository;
-import com.gmail.etauroginskaya.online_market.repository.exception.DatabaseQueryException;
 import com.gmail.etauroginskaya.online_market.repository.model.Role;
 import com.gmail.etauroginskaya.online_market.repository.model.User;
+import com.gmail.etauroginskaya.online_market.repository.UserRepository;
+import com.gmail.etauroginskaya.online_market.repository.exception.DatabaseQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
@@ -43,7 +43,7 @@ public class UserRepositoryImpl extends ConnectionRepositoryImpl implements User
     @Override
     public User getUserByID(Connection connection, Long id) {
         String sql = "SELECT u.*, r.name as name_role  FROM user u JOIN role r ON u.role_id = r.id " +
-                "WHERE (id = ? AND deleted = 'false')";
+                "WHERE (u.id = ? AND deleted = 'false')";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, id);
             try (ResultSet rs = statement.executeQuery()) {
@@ -79,7 +79,7 @@ public class UserRepositoryImpl extends ConnectionRepositoryImpl implements User
     }
 
     @Override
-    public Integer getQuantityUsers(Connection connection) {
+    public int getQuantityUsersNotDeleted(Connection connection) {
         String sql = "SELECT COUNT(*) AS total FROM user WHERE deleted = 'false'";
         try (PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet rs = statement.executeQuery()) {
@@ -95,7 +95,7 @@ public class UserRepositoryImpl extends ConnectionRepositoryImpl implements User
     }
 
     @Override
-    public Integer deleteListUsers(Connection connection, List<Long> listID) {
+    public int deleteUsers(Connection connection, List<Long> listID) {
         String sql = "UPDATE user SET deleted = true WHERE id IN (?)";
         sql = anyParams(sql, listID.size());
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -125,7 +125,7 @@ public class UserRepositoryImpl extends ConnectionRepositoryImpl implements User
     }
 
     @Override
-    public Integer updateUserRole(Connection connection, Long userID, Long newRoleID) {
+    public int updateUserRole(Connection connection, Long userID, Long newRoleID) {
         String sql = "UPDATE user SET role_id = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setLong(1, newRoleID);
@@ -170,27 +170,7 @@ public class UserRepositoryImpl extends ConnectionRepositoryImpl implements User
     }
 
     @Override
-    public List<Role> getListRoles(Connection connection) {
-        String sql = "SELECT * FROM role";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            try (ResultSet rs = statement.executeQuery()) {
-                List<Role> roles = new ArrayList<>();
-                while (rs.next()) {
-                    Role role = new Role();
-                    role.setId(rs.getLong("id"));
-                    role.setName(rs.getString("name"));
-                    roles.add(role);
-                }
-                return roles;
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new DatabaseQueryException(QUERY_ERROR_MESSAGE);
-        }
-    }
-
-    @Override
-    public Integer updateUserPassword(Connection connection, Long id, String newPassword) {
+    public int updateUserPassword(Connection connection, Long id, String newPassword) {
         String sql = "UPDATE user SET password = ? WHERE id = ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, newPassword);

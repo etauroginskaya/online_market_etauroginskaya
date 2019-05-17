@@ -64,28 +64,49 @@
         </insert>
     </changeSet>
 
-    <changeSet id="t_role_4" author="etauroginskaya">
-        <insert tableName="role">
-            <column name="name" value="Customer User"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="t_role_5" author="etauroginskaya">
-        <insert tableName="role">
-            <column name="name" value="Secure API User"/>
-        </insert>
-    </changeSet>
-
     <changeSet id="t_user_3" author="etauroginskaya">
         <insert tableName="user">
             <column name="id" valueNumeric="1"/>
             <column name="surname" value="admin"/>
             <column name="name" value="admin"/>
             <column name="patronymic" value=""/>
-            <column name="email" value="admin@gmail.com"/>
-            <column name="password" value="$2a$12$AH6AfXV1K4hv17jSK/.2Ge2SbwoPNjx4Oz1zy3DSZCQ37YimufMeO"/>
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Administrator')"/>
+            <column name="email" value="test@gmail.com"/>
+            <column name="password" value="123456"/>
+            <column name="role_id" valueNumeric="1"/>
             <column name="deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_user_4" author="etauroginskaya">
+        <insert tableName="user">
+            <column name="id" valueNumeric="2"/>
+            <column name="surname" value="test"/>
+            <column name="name" value="test"/>
+            <column name="patronymic" value=""/>
+            <column name="email" value="super_test@gmail.com"/>
+            <column name="password" value="123456"/>
+            <column name="role_id" valueNumeric="1"/>
+            <column name="deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_review_3" author="etauroginskaya">
+        <insert tableName="review">
+            <column name="description" value="test"/>
+            <column name="created" value="test"/>
+            <column name="show" valueNumeric="1"/>
+            <column name="deleted" valueNumeric="0"/>
+            <column name="user_id" valueNumeric="1"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_review_4" author="etauroginskaya">
+        <insert tableName="review">
+            <column name="description" value="test"/>
+            <column name="created" value="test"/>
+            <column name="show" valueNumeric="1"/>
+            <column name="deleted" valueNumeric="0"/>
+            <column name="user_id" valueNumeric="1"/>
         </insert>
     </changeSet>
 

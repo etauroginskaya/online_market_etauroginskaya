@@ -2,10 +2,10 @@ package com.gmail.etauroginskaya.online_market.service.impl;
 
 import com.gmail.etauroginskaya.online_market.repository.ReviewRepository;
 import com.gmail.etauroginskaya.online_market.repository.model.Review;
-import com.gmail.etauroginskaya.online_market.service.ReviewService;
 import com.gmail.etauroginskaya.online_market.service.converter.ReviewConverter;
 import com.gmail.etauroginskaya.online_market.service.exception.ServiceException;
 import com.gmail.etauroginskaya.online_market.service.model.ReviewDTO;
+import com.gmail.etauroginskaya.online_market.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -37,7 +37,7 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public Page<ReviewDTO> getReviewsInPage(Pageable pageable) {
+    public Page<ReviewDTO> getReviewsPage(Pageable pageable) {
         try (Connection connection = reviewRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
@@ -69,12 +69,13 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void updateStatusReview(Long id, Boolean newShowStatus) {
+    public int updateShowReview(Long id, boolean newShowStatus) {
         try (Connection connection = reviewRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
-                reviewRepository.updateReviewStatusShow(connection, id, newShowStatus);
+                int result = reviewRepository.updateReviewStatusShow(connection, id, newShowStatus);
                 connection.commit();
+                return result;
             } catch (SQLException e) {
                 connection.rollback();
                 logger.error(e.getMessage(), e);
@@ -87,14 +88,15 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void deleteReview(Long id) {
+    public int deleteReview(Long id) {
         try (Connection connection = reviewRepository.getConnection()) {
             connection.setAutoCommit(false);
             try {
                 Review review = new Review();
                 review.setId(id);
-                reviewRepository.deleteListReviews(connection, asList(review));
+                int result = reviewRepository.deleteListReviews(connection, asList(review));
                 connection.commit();
+                return result;
             } catch (SQLException e) {
                 connection.rollback();
                 logger.error(e.getMessage(), e);

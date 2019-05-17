@@ -9,9 +9,9 @@ public interface ReviewRepository extends ConnectionRepository {
 
     List<Review> getReviewsInBatch(Connection connection, int page, int quantityReviewsInBatch);
 
-    Integer getQuantityReviews(Connection connection);
+    int getQuantityReviews(Connection connection);
 
-    void deleteListReviews(Connection connection, List<Review> reviews);
+    int deleteListReviews(Connection connection, List<Review> reviews);
 
-    void updateReviewStatusShow(Connection connection, Long id, Boolean newShowStatus);
+    int updateReviewStatusShow(Connection connection, Long id, boolean newShowStatus);
 }

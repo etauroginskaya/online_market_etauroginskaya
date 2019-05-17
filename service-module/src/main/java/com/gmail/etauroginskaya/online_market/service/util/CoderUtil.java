@@ -1,6 +1,6 @@
 package com.gmail.etauroginskaya.online_market.service.util;
 
-public interface PassGenUtil {
+public interface CoderUtil {
 
-    String getPassword(int size);
+    String encode(String password);
 }
