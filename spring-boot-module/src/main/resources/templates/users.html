@@ -1,0 +1,103 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Users</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">Users list:</h1>
+    <div th:if="${param.added}">
+        <div class="alert alert-success text-center">
+            User successfully added.
+        </div>
+    </div>
+    <div th:if="${param.updated}">
+        <div class="alert alert-success text-center">
+            User successfully updated.
+        </div>
+    </div>
+    <div th:if="${param.not_updated}">
+        <div class="alert alert-warning text-center">
+            User not updated!
+        </div>
+    </div>
+    <div th:if="${param.unavailable_update}">
+        <div class="alert alert-info text-center">
+            Privileges of this user cannot be changed!
+        </div>
+    </div>
+    <div th:if="${param.deleted}">
+        <div class="alert alert-success text-center">
+            User successfully deleted.
+        </div>
+    </div>
+    <div th:if="${param.not_deleted}">
+        <div class="alert alert-warning text-center">
+            Users not deleted!
+        </div>
+    </div>
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="row"></th>
+            <th scope="col">Full name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Role</th>
+            <th scope="col">Delete</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user, stat : ${userPage}">
+            <td><span th:text="${stat.index + 1}"/></td>
+            <td><span th:text="${user.surname} +' '+ ${user.name} +' '+ ${user.patronymic}"/></td>
+            <td><span th:text="${user.email}"/></td>
+            <td>
+                <div class="btn-group dropright">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" th:text="${user.role.name}"/>
+                    <div class="dropdown-menu">
+                        <div th:each="role :  ${roles}">
+                            <form th:method="post"
+                                  th:action="@{/private/users/update(id=${user.id},roleID=${role.id},action=${model})}">
+                                <button type="submit" name="action" class="dropdown-item" value="ROLE"
+                                        th:text="${role.name}"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td><input class="checkbox top-left" type="checkbox" name="listID"
+                       form="delete" th:value="${user.id}"></td>
+            <form action="#" th:action="@{/private/users/update(id=${user.id}, action=${model})}" method="post">
+                <td>
+                    <button type="submit" name="action" class="btn btn-secondary btn-block" value="PASSWORD">
+                        Change password
+                    </button>
+                </td>
+            </form>
+        </tr>
+        </tbody>
+    </table>
+    <form id="delete" th:action="@{/private/users/delete}" method="post">
+        <div class="row justify-content-center">
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <input type="submit" class="btn btn-lg btn-danger btn-block" value="Delete"/>
+            </div>
+        </div>
+    </form>
+    <nav aria-label="Page navigation example">
+        <ul th:if="${userPage.totalPages > 0}" class="pagination justify-content-center">
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link" th:href="@{/private/users(size=${userPage.size}, page=${pageNumber})}"
+                   th:text="${pageNumber}"
+                   th:class="${pageNumber==userPage.number + 1} ? active"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

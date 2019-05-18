@@ -1,0 +1,14 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<h1>HTTP Status 403 - Access is denied</h1>
+<div th:if="${msg}">
+    <div th:text="${msg}"></div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

@@ -1,0 +1,92 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.6.xsd">
+    <changeSet id="t_role_1" author="etauroginskaya">
+        <createTable tableName="role">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(127)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="t_user_1" author="etauroginskaya">
+        <createTable tableName="user">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="surname" type="varchar(127)"/>
+            <column name="name" type="varchar(127)"/>
+            <column name="patronymic" type="varchar(127)"/>
+            <column name="email" type="varchar(127)"/>
+            <column name="password" type="varchar(127)"/>
+            <column name="role_id" type="bigint"/>
+            <column name="deleted" type="bit(1)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="t_user_2" author="etauroginskaya">
+        <addForeignKeyConstraint baseTableName="user" baseColumnNames="role_id" constraintName="fk_user_role"
+                                 referencedTableName="role"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_review_1" author="etauroginskaya">
+        <createTable tableName="review">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="description" type="text"/>
+            <column name="created" type="varchar(127)"/>
+            <column name="show" type="bit(1)"/>
+            <column name="deleted" type="bit(1)"/>
+            <column name="user_id" type="bigint"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="t_review_2" author="etauroginskaya">
+        <addForeignKeyConstraint baseTableName="review" baseColumnNames="user_id" constraintName="fk_review_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_role_2" author="etauroginskaya">
+        <insert tableName="role">
+            <column name="name" value="Administrator"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_role_3" author="etauroginskaya">
+        <insert tableName="role">
+            <column name="name" value="Sale User"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_role_4" author="etauroginskaya">
+        <insert tableName="role">
+            <column name="name" value="Customer User"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_role_5" author="etauroginskaya">
+        <insert tableName="role">
+            <column name="name" value="Secure API User"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_user_3" author="etauroginskaya">
+        <insert tableName="user">
+            <column name="id" valueNumeric="1"/>
+            <column name="surname" value="admin"/>
+            <column name="name" value="admin"/>
+            <column name="patronymic" value=""/>
+            <column name="email" value="admin@gmail.com"/>
+            <column name="password" value="$2a$12$AH6AfXV1K4hv17jSK/.2Ge2SbwoPNjx4Oz1zy3DSZCQ37YimufMeO"/>
+            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Administrator')"/>
+            <column name="deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>
