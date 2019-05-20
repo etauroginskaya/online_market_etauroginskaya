@@ -17,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-public class UserRepositoryImpl extends ConnectionRepositoryImpl implements UserRepository {
+public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implements UserRepository {
 
     private static final Logger logger = LoggerFactory.getLogger(UserRepositoryImpl.class);
     private static final String QUERY_ERROR_MESSAGE = "SQL query Failed! Check output console.";
@@ -144,14 +144,13 @@ public class UserRepositoryImpl extends ConnectionRepositoryImpl implements User
 
     @Override
     public void addUser(Connection connection, User user) {
-        String sql = "INSERT INTO user(surname, name, patronymic, email, password, role_id, deleted) VALUES(?, ?, ?, ?, ?, ?, false)";
+        String sql = "INSERT INTO user(surname, name, email, password, role_id, deleted) VALUES(?, ?, ?, ?, ?, false)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, user.getSurname());
             statement.setString(2, user.getName());
-            statement.setString(3, user.getPatronymic());
-            statement.setString(4, user.getEmail());
-            statement.setString(5, user.getPassword());
-            statement.setLong(6, user.getRole().getId());
+            statement.setString(3, user.getEmail());
+            statement.setString(4, user.getPassword());
+            statement.setLong(5, user.getRole().getId());
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
                 logger.error("Creating user failed, no row affected.");
@@ -192,7 +191,6 @@ public class UserRepositoryImpl extends ConnectionRepositoryImpl implements User
         user.setId(resultSet.getLong("id"));
         user.setSurname(resultSet.getString("surname"));
         user.setName(resultSet.getString("name"));
-        user.setPatronymic(resultSet.getString("patronymic"));
         user.setEmail(resultSet.getString("email"));
         user.setPassword(resultSet.getString("password"));
         Role role = new Role();

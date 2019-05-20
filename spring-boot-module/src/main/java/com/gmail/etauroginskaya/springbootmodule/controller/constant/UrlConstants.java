@@ -12,4 +12,10 @@ public class UrlConstants {
     public static final String REVIEWS_URL = "/reviews";
     public static final String REVIEWS_UPDATE_URL = "/private/reviews/update/{id}";
     public static final String REVIEWS_DELETE_URL = "/private/reviews/delete/{id}";
+    public static final String API_ARTICLES_URL = "/api/articles";
+    public static final String API_ARTICLE_URL = "/api/articles/{id}";
+    public static final String API_USER_URL = "/api/users/{id}";
+    public static final String ARTICLES_URL = "/articles";
+    public static final String ARTICLE_URL = "/articles/{id}";
+    public static final String PROFILE_URL = "/profile";
 }

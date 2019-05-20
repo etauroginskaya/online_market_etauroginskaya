@@ -24,7 +24,7 @@ public class ReviewRepositoryImpl extends ConnectionRepositoryImpl implements Re
 
     @Override
     public List<Review> getReviewsInBatch(Connection connection, int page, int quantityReviewsInBatch) {
-        String sql = "SELECT r.*, u.surname, u.name, u.patronymic FROM review r JOIN user u ON r.user_id = u.id " +
+        String sql = "SELECT r.*, u.surname, u.name FROM review r JOIN user u ON r.user_id = u.id " +
                 "WHERE r.deleted = false LIMIT ?, ?";
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, page * quantityReviewsInBatch);
@@ -52,7 +52,6 @@ public class ReviewRepositoryImpl extends ConnectionRepositoryImpl implements Re
         user.setId(rs.getLong("user_id"));
         user.setSurname(rs.getString("surname"));
         user.setName(rs.getString("name"));
-        user.setPatronymic(rs.getString("patronymic"));
         review.setUser(user);
         return review;
     }

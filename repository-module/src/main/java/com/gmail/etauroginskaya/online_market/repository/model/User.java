@@ -1,14 +1,38 @@
 package com.gmail.etauroginskaya.online_market.repository.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.util.Objects;
+
+@Entity
+@Table
+@SQLDelete(sql = "UPDATE user SET deleted = '1' WHERE id = ?")
+@Where(clause = "deleted = '0'")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String surname;
     private String name;
-    private String patronymic;
     private String email;
     private String password;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
     private Role role;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
+    private Profile profile;
 
     public Long getId() {
         return id;
@@ -34,14 +58,6 @@ public class User {
         this.name = name;
     }
 
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -64,5 +80,31 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Profile getProfile() {
+        return profile;
+    }
+
+    public void setProfile(Profile profile) {
+        this.profile = profile;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(id, user.id) &&
+                Objects.equals(surname, user.surname) &&
+                Objects.equals(name, user.name) &&
+                Objects.equals(email, user.email) &&
+                Objects.equals(role, user.role) &&
+                Objects.equals(profile, user.profile);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, surname, name, email, role, profile);
     }
 }

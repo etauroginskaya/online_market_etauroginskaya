@@ -1,0 +1,56 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Articles</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">Articles list:</h1>
+    <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false" th:text="${articlePage.size}"/>
+        <div class="dropdown-menu">
+            <div th:each="count :  ${countsItem}">
+                <form th:action="@{/articles(size=${model}, page=${pageNumber})}">
+                    <button type="submit" name="size" class="dropdown-item" th:value="${count}"
+                            th:text="${count}"/>
+                </form>
+            </div>
+        </div>
+    </div>
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Date</th>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Short description</th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="article : ${articlePage}">
+            <td><span th:text="${article.created}"/></td>
+            <td><span th:text="${article.title}"/></td>
+            <td><span th:text="${article.user.surname} +' '+ ${article.user.name}"/></td>
+            <td><span th:text="${article.description}"/></td>
+            <td><a th:href="@{/articles/{id}(id=${article.id})}">detail ...</a></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="Page navigation example">
+        <ul th:if="${articlePage.totalPages > 0}" class="pagination justify-content-center">
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link" th:href="@{/articles(size=${articlePage.size}, page=${pageNumber})}"
+                   th:text="${pageNumber}"
+                   th:class="${pageNumber==articlePage.number + 1} ? active"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

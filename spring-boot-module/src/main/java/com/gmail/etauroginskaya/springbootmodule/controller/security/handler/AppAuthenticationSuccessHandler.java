@@ -17,6 +17,8 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.ADMIN_ROLE_NAME;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.CUSTOMER_ROLE_NAME;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ARTICLES_URL;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.USERS_URL;
 
 public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -32,7 +34,7 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
     }
 
     private void handle(HttpServletRequest request, HttpServletResponse response,
-                          Authentication authentication) throws IOException {
+                        Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
         if (response.isCommitted()) {
             logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
@@ -50,6 +52,8 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
             switch (grantedAuthority.getAuthority()) {
                 case ADMIN_ROLE_NAME:
                     return USERS_URL;
+                case CUSTOMER_ROLE_NAME:
+                    return ARTICLES_URL;
             }
         }
         logger.warn(String.format("No authentication success handler for user: %s",

@@ -19,4 +19,8 @@ public interface UserService {
     int updateUserPassword(Long id);
 
     Integer updateUserRole(Long userID, Long newRoleID);
+
+    UserDTO getUserWithProfileById(Long id);
+
+    void updateUserWithProfile(UserDTO userDTO);
 }

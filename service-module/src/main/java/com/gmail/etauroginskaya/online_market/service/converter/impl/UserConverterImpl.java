@@ -23,7 +23,6 @@ public class UserConverterImpl implements UserConverter {
         userDTO.setId(user.getId());
         userDTO.setSurname(user.getSurname());
         userDTO.setName(user.getName());
-        userDTO.setPatronymic(user.getPatronymic());
         userDTO.setEmail(user.getEmail());
         userDTO.setPassword(user.getPassword());
         RoleDTO roleDTO = roleConverter.toDTO(user.getRole());
@@ -37,11 +36,12 @@ public class UserConverterImpl implements UserConverter {
         user.setId(userDTO.getId());
         user.setSurname(userDTO.getSurname());
         user.setName(userDTO.getName());
-        user.setPatronymic(userDTO.getPatronymic());
         user.setEmail(userDTO.getEmail());
         user.setPassword(userDTO.getPassword());
-        Role role = roleConverter.fromDTO(userDTO.getRole());
-        user.setRole(role);
+        if (userDTO.getRole() != null) {
+            Role role = roleConverter.fromDTO(userDTO.getRole());
+            user.setRole(role);
+        }
         return user;
     }
 }

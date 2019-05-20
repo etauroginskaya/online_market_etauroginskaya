@@ -19,7 +19,6 @@
             </column>
             <column name="surname" type="varchar(127)"/>
             <column name="name" type="varchar(127)"/>
-            <column name="patronymic" type="varchar(127)"/>
             <column name="email" type="varchar(127)"/>
             <column name="password" type="varchar(127)"/>
             <column name="role_id" type="bigint"/>
@@ -81,11 +80,102 @@
             <column name="id" valueNumeric="1"/>
             <column name="surname" value="admin"/>
             <column name="name" value="admin"/>
-            <column name="patronymic" value=""/>
             <column name="email" value="admin@gmail.com"/>
             <column name="password" value="$2a$12$AH6AfXV1K4hv17jSK/.2Ge2SbwoPNjx4Oz1zy3DSZCQ37YimufMeO"/>
             <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Administrator')"/>
             <column name="deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_article_1" author="etauroginskaya">
+        <createTable tableName="article">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="varchar(255)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="description" type="text(1020)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="article" baseColumnNames="user_id" constraintName="fk_article_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_comment_1" author="etauroginskaya">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="article_id" type="bigint"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="user_id"
+                                 constraintName="fk_comment_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="article_id"
+                                 constraintName="fk_comment_article"
+                                 referencedTableName="article"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_user_4" author="etauroginskaya">
+        <insert tableName="user">
+            <column name="surname" value="Tau"/>
+            <column name="name" value="Alena"/>
+            <column name="email" value="etauroginskaya@gmail.com"/>
+            <column name="password" value="$2a$12$AH6AfXV1K4hv17jSK/.2Ge2SbwoPNjx4Oz1zy3DSZCQ37YimufMeO"/>
+            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Customer User')"/>
+            <column name="deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="article">
+            <column name="created" value="19/05/2019"/>
+            <column name="title" value="test title"/>
+            <column name="description" value="test description"/>
+            <column name="user_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_profile_1" author="etauroginskaya">
+        <createTable tableName="profile">
+            <column name="user_id" type="bigint"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="telephone" type="varchar(255)"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="profile" baseColumnNames="user_id"
+                                 constraintName="fk_profile_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_comment_2" author="etauroginskaya">
+        <insert tableName="comment">
+            <column name="created" value="20/05/2019"/>
+            <column name="description" value="test"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="article_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="created" value="20/05/2019"/>
+            <column name="description" value="test"/>
+            <column name="user_id" valueNumeric="1"/>
+            <column name="article_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="created" value="20/05/2019"/>
+            <column name="description" value="testovich"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="article_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
         </insert>
     </changeSet>
 

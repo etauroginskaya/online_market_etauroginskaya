@@ -34,6 +34,16 @@
                         <a class="nav-item nav-link" th:href="@{/reviews}">Reviews</a>
                     </span>
                 </span>
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Customer User')">
+                        <a class="nav-item nav-link" th:href="@{/articles}">Articles</a>
+                    </span>
+                </span>
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Customer User')">
+                        <a class="nav-item nav-link" th:href="@{/profile}">Profile</a>
+                    </span>
+                </span>
             </div>
         </div>
     </nav>

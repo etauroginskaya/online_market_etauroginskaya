@@ -14,6 +14,7 @@ import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.ADMIN_ROLE_NAME;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.CUSTOMER_ROLE_NAME;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.*;
 
 @Configuration
@@ -35,6 +36,7 @@ public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(USERS_URL, USERS_ADD_URL, USERS_UPDATE_URL, USERS_DELETE_URL,
                         REVIEWS_UPDATE_URL, REVIEWS_DELETE_URL).hasAuthority(ADMIN_ROLE_NAME)
+                .antMatchers(ARTICLES_URL, ARTICLE_URL, PROFILE_URL).hasAuthority(CUSTOMER_ROLE_NAME)
                 .antMatchers(HOME_URL, ERROR_403_URL, LOGIN_URL, REVIEWS_URL).permitAll()
                 .and()
                 .formLogin()

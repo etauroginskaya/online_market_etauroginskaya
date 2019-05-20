@@ -31,17 +31,6 @@
                 <input type="text" class="form-control" aria-describedby="basic-addon1" th:field="*{name}">
             </div>
 
-            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('patronymic')}"
-                 th:errors="*{patronymic}">Patronymic Error
-            </div>
-            <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text" id="patronymic">Patronymic</span>
-                </div>
-                <input type="text" class="form-control" aria-describedby="basic-addon1"
-                       th:field="*{patronymic}">
-            </div>
-
             <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">
                 Email Error
             </div>

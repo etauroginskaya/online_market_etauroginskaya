@@ -5,7 +5,7 @@ import com.gmail.etauroginskaya.online_market.repository.model.User;
 import java.sql.Connection;
 import java.util.List;
 
-public interface UserRepository extends ConnectionRepository {
+public interface UserRepository extends GenericRepository<Long, User> {
 
     User getUserByEmail(Connection connection, String email);
 

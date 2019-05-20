@@ -52,7 +52,7 @@
         <tbody>
         <tr th:each="user, stat : ${userPage}">
             <td><span th:text="${stat.index + 1}"/></td>
-            <td><span th:text="${user.surname} +' '+ ${user.name} +' '+ ${user.patronymic}"/></td>
+            <td><span th:text="${user.surname} +' '+ ${user.name}"/></td>
             <td><span th:text="${user.email}"/></td>
             <td>
                 <div class="btn-group dropright">

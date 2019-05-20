@@ -27,7 +27,6 @@ public class ReviewConverterImpl implements ReviewConverter {
         userDTO.setId(review.getUser().getId());
         userDTO.setSurname(review.getUser().getSurname());
         userDTO.setName(review.getUser().getName());
-        userDTO.setPatronymic(review.getUser().getPatronymic());
         reviewDTO.setUser(userDTO);
         reviewDTO.setShow(review.isShow());
         return reviewDTO;

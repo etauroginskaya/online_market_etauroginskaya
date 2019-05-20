@@ -110,4 +110,77 @@
         </insert>
     </changeSet>
 
+    <changeSet id="t_article_1" author="etauroginskaya">
+        <createTable tableName="article">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="varchar(255)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="description" type="text(1020)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="article" baseColumnNames="user_id" constraintName="fk_article_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_comment_1" author="etauroginskaya">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="article_id" type="bigint"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="user_id" constraintName="fk_comment_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="article_id"
+                                 constraintName="fk_comment_article"
+                                 referencedTableName="article"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_article_2" author="etauroginskaya">
+        <insert tableName="article">
+            <column name="created" value="18/05/2019"/>
+            <column name="title" value="test title 2"/>
+            <column name="description" value="test description 2"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="created" value="18/05"/>
+            <column name="description" value="test comment description"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="article_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="comment">
+            <column name="created" value="18/05"/>
+            <column name="description" value="test comment 2 description"/>
+            <column name="user_id" valueNumeric="1"/>
+            <column name="article_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_profile_1" author="etauroginskaya">
+        <createTable tableName="profile">
+            <column name="user_id" type="bigint"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="telephone" type="varchar(255)"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="profile" baseColumnNames="user_id"
+                                 constraintName="fk_profile_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
 </databaseChangeLog>

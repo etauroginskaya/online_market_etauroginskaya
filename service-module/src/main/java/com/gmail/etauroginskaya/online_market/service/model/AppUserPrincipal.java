@@ -11,9 +11,11 @@ public class AppUserPrincipal implements UserDetails {
 
     private UserDTO user;
     private Collection<GrantedAuthority> authorities;
+    private Long id;
 
     public AppUserPrincipal(UserDTO user) {
         this.user = user;
+        this.id = user.getId();
         authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
     }
 
@@ -50,5 +52,9 @@ public class AppUserPrincipal implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    public Long getId() {
+        return user.getId();
     }
 }

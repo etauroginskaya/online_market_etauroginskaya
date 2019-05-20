@@ -47,7 +47,7 @@
         <tbody>
         <tr th:each="review, stat : ${reviewPage}">
             <td><span th:text="${stat.index + 1}"/></td>
-            <td><span th:text="${review.user.surname} +' '+ ${review.user.name} +' '+ ${review.user.patronymic}"/></td>
+            <td><span th:text="${review.user.surname} +' '+ ${review.user.name}"/></td>
             <td><span th:text="${review.description}"/></td>
             <td><span th:text="${review.created}"/></td>
             <div sec:authorize="isAuthenticated()">

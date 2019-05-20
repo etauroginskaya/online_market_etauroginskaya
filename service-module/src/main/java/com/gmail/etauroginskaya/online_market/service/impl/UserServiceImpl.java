@@ -1,14 +1,16 @@
 package com.gmail.etauroginskaya.online_market.service.impl;
 
 import com.gmail.etauroginskaya.online_market.repository.UserRepository;
+import com.gmail.etauroginskaya.online_market.repository.model.Profile;
 import com.gmail.etauroginskaya.online_market.repository.model.User;
 import com.gmail.etauroginskaya.online_market.service.EmailService;
+import com.gmail.etauroginskaya.online_market.service.UserService;
 import com.gmail.etauroginskaya.online_market.service.converter.UserConverter;
 import com.gmail.etauroginskaya.online_market.service.exception.ServiceException;
+import com.gmail.etauroginskaya.online_market.service.model.ProfileDTO;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
 import com.gmail.etauroginskaya.online_market.service.util.CoderUtil;
 import com.gmail.etauroginskaya.online_market.service.util.PassGenUtil;
-import com.gmail.etauroginskaya.online_market.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -143,6 +146,31 @@ public class UserServiceImpl implements UserService {
             logger.error(e.getMessage(), e);
             throw new ServiceException(CONNECTION_ERROR_MESSAGE, e);
         }
+    }
+
+    @Override
+    @Transactional
+    public UserDTO getUserWithProfileById(Long id) {
+        User user = userRepository.getById(id);
+        UserDTO userDTO = userConverter.toDTO(user);
+        ProfileDTO profileDTO = new ProfileDTO();
+        if (user.getProfile() != null) {
+            profileDTO.setAddress(user.getProfile().getAddress());
+            profileDTO.setTelephone(user.getProfile().getTelephone());
+        }
+        userDTO.setProfileDTO(profileDTO);
+        return userDTO;
+    }
+
+    @Override
+    @Transactional
+    public void updateUserWithProfile(UserDTO userDTO) {
+        User user = userConverter.fromDTO(userDTO);
+        Profile profile = new Profile();
+        profile.setAddress(userDTO.getProfileDTO().getAddress());
+        profile.setTelephone(userDTO.getProfileDTO().getTelephone());
+        user.setProfile(profile);
+        userRepository.merge(user);
     }
 
     @Override

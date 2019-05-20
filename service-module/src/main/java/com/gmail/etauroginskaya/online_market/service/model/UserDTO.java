@@ -19,10 +19,6 @@ public class UserDTO {
     @Pattern(regexp = "[A-Za-z]+", message = "Only Latin characters must be used!")
     private String name;
 
-    @Size(max = 40)
-    @Pattern(regexp = "[A-Za-z]+", message = "Only Latin characters must be used!")
-    private String patronymic;
-
     @NotBlank
     @Size(max = 50)
     @Email
@@ -31,6 +27,8 @@ public class UserDTO {
     private String password;
 
     private RoleDTO role;
+
+    private ProfileDTO profileDTO;
 
     public Long getId() {
         return id;
@@ -56,14 +54,6 @@ public class UserDTO {
         this.name = name;
     }
 
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -86,5 +76,13 @@ public class UserDTO {
 
     public void setRole(RoleDTO role) {
         this.role = role;
+    }
+
+    public ProfileDTO getProfileDTO() {
+        return profileDTO;
+    }
+
+    public void setProfileDTO(ProfileDTO profileDTO) {
+        this.profileDTO = profileDTO;
     }
 }
