@@ -7,6 +7,7 @@ import com.gmail.etauroginskaya.online_market.service.converter.CommentConverter
 import com.gmail.etauroginskaya.online_market.service.converter.UserConverter;
 import com.gmail.etauroginskaya.online_market.service.model.ArticleDTO;
 import com.gmail.etauroginskaya.online_market.service.model.CommentDTO;
+import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -31,7 +32,10 @@ public class ArticleConverterImpl implements ArticleConverter {
         articleDTO.setCreated(article.getCreated());
         articleDTO.setTitle(article.getTitle());
         articleDTO.setDescription(article.getDescription());
-        articleDTO.setUser(userConverter.toDTO(article.getUser()));
+        UserDTO userDTO = new UserDTO();
+        userDTO.setSurname(article.getUser().getSurname());
+        userDTO.setName(article.getUser().getName());
+        articleDTO.setUser(userDTO);
         List<CommentDTO> dtos = article.getComments().stream()
                 .map(commentConverter::toDTO)
                 .collect(Collectors.toList());

@@ -9,13 +9,20 @@ import org.springframework.stereotype.Component;
 @Component
 public class CoderUtilImpl implements CoderUtil {
 
+    private static final int ENCODING_STRENGTH = 12;
+
     @Override
     public String encode(String password) {
         return passwordEncoder().encode(password);
     }
 
+    @Override
+    public boolean checkPassword(String existingPassword, String dbPassword) {
+        return passwordEncoder().matches(existingPassword, dbPassword);
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(12);
+        return new BCryptPasswordEncoder(ENCODING_STRENGTH);
     }
 }

@@ -164,60 +164,56 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateUserWithProfile(UserDTO userDTO) {
-        User user = userConverter.fromDTO(userDTO);
-        Profile profile = new Profile();
-        profile.setAddress(userDTO.getProfileDTO().getAddress());
-        profile.setTelephone(userDTO.getProfileDTO().getTelephone());
-        user.setProfile(profile);
+    public void updateUserWithProfile(UserDTO userDTO, boolean isRandomPass, boolean changePass) {
+        User user = userRepository.getById(userDTO.getId());
+        if (isRandomPass) {
+            String password = passGenUtil.getPassword(PASSWORD_LENGTH);
+            user.setPassword(coderUtil.encode(password));
+            sendUpdatedPasswordToEmail(user, password);
+        } else if (changePass) {
+            user.setPassword(coderUtil.encode(userDTO.getPassword()));
+        }
+        user.setSurname(userDTO.getSurname());
+        user.setName(userDTO.getName());
+        user.getProfile().setAddress(userDTO.getProfileDTO().getAddress());
+        user.getProfile().setTelephone(userDTO.getProfileDTO().getTelephone());
         userRepository.merge(user);
     }
 
     @Override
-    public void addUser(UserDTO userDTO) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                String password = passGenUtil.getPassword(PASSWORD_LENGTH);
-                userDTO.setPassword(coderUtil.encode(password));
-                User userForSave = userConverter.fromDTO(userDTO);
-                userRepository.addUser(connection, userForSave);
-                String message = String.format("Hello %s!\n The new registered account is assigned a password: %s",
-                        userDTO.getName(), password);
-                emailService.sendMessage(userDTO.getEmail(), "Market account information", message);
-                connection.commit();
-            } catch (SQLException e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new ServiceException(TRANSACTION_ERROR_MESSAGE, e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(CONNECTION_ERROR_MESSAGE, e);
-        }
+    @Transactional
+    public String getPasswordByUserId(Long id) {
+        return userRepository.getUserPasswordById(id);
     }
 
     @Override
+    @Transactional
+    public void addUser(UserDTO userDTO) {
+        String password = passGenUtil.getPassword(PASSWORD_LENGTH);
+        userDTO.setPassword(coderUtil.encode(password));
+        User user = userConverter.fromDTO(userDTO);
+        Profile profile = new Profile();
+        profile.setUser(user);
+        user.setProfile(profile);
+        userRepository.persist(user);
+        String message = String.format("Hello %s!\n The new registered account is assigned a password: %s",
+                userDTO.getName(), password);
+        emailService.sendMessage(userDTO.getEmail(), "Market account information", message);
+    }
+
+    @Override
+    @Transactional
     public int updateUserPassword(Long id) {
-        try (Connection connection = userRepository.getConnection()) {
-            connection.setAutoCommit(false);
-            try {
-                User user = userRepository.getUserByID(connection, id);
-                String password = passGenUtil.getPassword(PASSWORD_LENGTH);
-                int result = userRepository.updateUserPassword(connection, id, password);
-                String message = String.format("Hello %s!\n " +
-                        "Your password has been updated. New password: %s", user.getName(), password);
-                emailService.sendMessage(user.getEmail(), "Market account information", message);
-                connection.commit();
-                return result;
-            } catch (SQLException e) {
-                connection.rollback();
-                logger.error(e.getMessage(), e);
-                throw new ServiceException(TRANSACTION_ERROR_MESSAGE, e);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new ServiceException(CONNECTION_ERROR_MESSAGE, e);
-        }
+        User user = userRepository.getById(id);
+        String password = passGenUtil.getPassword(PASSWORD_LENGTH);
+        int result = userRepository.updateUserPasswordById(id, coderUtil.encode(password));
+        sendUpdatedPasswordToEmail(user, password);
+        return result;
+    }
+
+    private void sendUpdatedPasswordToEmail(User user, String password) {
+        String message = String.format("Hello %s!\n " +
+                "Your password has been updated. New password: %s", user.getName(), password);
+        emailService.sendMessage(user.getEmail(), "Market account information", message);
     }
 }

@@ -15,7 +15,6 @@ public class AppUserPrincipal implements UserDetails {
 
     public AppUserPrincipal(UserDTO user) {
         this.user = user;
-        this.id = user.getId();
         authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().getName()));
     }
 

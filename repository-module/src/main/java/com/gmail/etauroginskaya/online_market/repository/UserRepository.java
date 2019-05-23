@@ -19,7 +19,9 @@ public interface UserRepository extends GenericRepository<Long, User> {
 
     void addUser(Connection connection, User user);
 
-    int updateUserPassword(Connection connection, Long id, String newPassword);
+    int updateUserPasswordById(Long id, String newPassword);
 
     int updateUserRole(Connection connection, Long userID, Long newRoleID);
+
+    String getUserPasswordById(Long id);
 }

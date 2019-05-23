@@ -21,7 +21,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class ArticleServiceImpl implements ArticleService {
 
     private static Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
@@ -36,6 +35,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public Page<ArticleDTO> getArticlePage(int pageSize, int currentPage) {
         int startItem = currentPage * pageSize;
         int quantityEntity = articleRepository.getCountOfEntities();
@@ -60,6 +60,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleDTO addArticle(ArticleDTO articleDTO) {
         Article article = articleConverter.toEntity(articleDTO);
         Comment comment = new Comment();
@@ -76,6 +77,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleDTO getArticleById(Long id) {
         Article article = articleRepository.getById(id);
         ArticleDTO articleDTO = articleConverter.toDTO(article);
@@ -83,6 +85,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public void deleteArticleById(Long id) {
         Article article = articleRepository.getById(id);
         articleRepository.remove(article);

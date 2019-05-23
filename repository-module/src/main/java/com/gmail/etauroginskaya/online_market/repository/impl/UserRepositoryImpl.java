@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
+import javax.persistence.Query;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -143,6 +144,14 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
     }
 
     @Override
+    public String getUserPasswordById(Long id) {
+        String hql = "SELECT U.password FROM User AS U WHERE U.id=:id";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("id", id);
+        return (String) query.getSingleResult();
+    }
+
+    @Override
     public void addUser(Connection connection, User user) {
         String sql = "INSERT INTO user(surname, name, email, password, role_id, deleted) VALUES(?, ?, ?, ?, ?, false)";
         try (PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -169,21 +178,12 @@ public class UserRepositoryImpl extends GenericRepositoryImpl<Long, User> implem
     }
 
     @Override
-    public int updateUserPassword(Connection connection, Long id, String newPassword) {
-        String sql = "UPDATE user SET password = ? WHERE id = ?";
-        try (PreparedStatement statement = connection.prepareStatement(sql)) {
-            statement.setString(1, newPassword);
-            statement.setLong(2, id);
-            int affectedRows = statement.executeUpdate();
-            if (affectedRows == 0) {
-                logger.error("Updating user password failed, no row affected.");
-                throw new DatabaseQueryException("Updating user password failed, no row affected.");
-            }
-            return affectedRows;
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw new DatabaseQueryException(QUERY_ERROR_MESSAGE);
-        }
+    public int updateUserPasswordById(Long id, String newPassword) {
+        String hql = "UPDATE User U SET U.password=:password WHERE U.id=:id";
+        Query query = entityManager.createQuery(hql);
+        query.setParameter("id", id);
+        query.setParameter("password", newPassword);
+        return query.executeUpdate();
     }
 
     User getUser(ResultSet resultSet) throws SQLException {

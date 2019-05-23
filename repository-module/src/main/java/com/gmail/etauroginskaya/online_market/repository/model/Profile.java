@@ -1,10 +1,18 @@
 package com.gmail.etauroginskaya.online_market.repository.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +23,7 @@ public class Profile {
 
     @GenericGenerator(name = "generator",
             strategy = "foreign",
-            parameters = @org.hibernate.annotations.Parameter(name = "property", value = "user"))
+            parameters = @Parameter(name = "property", value = "user"))
     @Id
     @GeneratedValue(generator = "generator")
     private Long userId;
@@ -26,6 +34,14 @@ public class Profile {
     private String telephone;
     @Column(name = "is_deleted")
     private boolean isDeleted;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public User getUser() {
         return user;
@@ -64,13 +80,12 @@ public class Profile {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Profile profile = (Profile) o;
-        return Objects.equals(user, profile.user) &&
-                Objects.equals(address, profile.address) &&
+        return  Objects.equals(address, profile.address) &&
                 Objects.equals(telephone, profile.telephone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(user, address, telephone);
+        return Objects.hash(address, telephone);
     }
 }

@@ -22,5 +22,7 @@ public interface UserService {
 
     UserDTO getUserWithProfileById(Long id);
 
-    void updateUserWithProfile(UserDTO userDTO);
+    void updateUserWithProfile(UserDTO userDTO, boolean isRandomPass, boolean changePass);
+
+    String getPasswordByUserId(Long id);
 }

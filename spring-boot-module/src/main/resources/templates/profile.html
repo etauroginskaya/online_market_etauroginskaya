@@ -7,6 +7,26 @@
 <body>
 <div th:replace="fragments/header :: header"/>
 <div class="container">
+    <div th:if="${param.invalid_password}">
+        <div class="alert alert-danger text-center">
+            Invalid current password entered!
+        </div>
+    </div>
+    <div th:if="${param.enter_password}">
+        <div class="alert alert-danger text-center">
+            Current password is not entered!
+        </div>
+    </div>
+    <div th:if="${param.not_equal_password}">
+        <div class="alert alert-danger text-center">
+            New password does not match the repeat value!
+        </div>
+    </div>
+    <div th:if="${param.updated}">
+        <div class="alert alert-success text-center">
+            User successfully updated.
+        </div>
+    </div>
     <div class="row justify-content-center">
         <form th:action="@{/profile(newPassword=${model},repeatPassword=${model})}"
               th:object="${user}" method="post" style="color: white">
@@ -56,19 +76,19 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="newPassword">New password</span>
                 </div>
-                <input type="text" class="form-control" aria-describedby="basic-addon1" name="newPassword">
+                <input type="password" class="form-control" aria-describedby="basic-addon1" name="newPassword">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="repeatPassword">Repeat</span>
                 </div>
-                <input type="text" class="form-control" aria-describedby="basic-addon1" name="repeatPassword">
+                <input type="password" class="form-control" aria-describedby="basic-addon1" name="repeatPassword">
             </div>
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="currentPassword">Current password</span>
                 </div>
-                <input type="text" class="form-control" aria-describedby="basic-addon1" name="password">
+                <input type="password" class="form-control" aria-describedby="basic-addon1" name="password">
             </div>
 
             <input type="checkbox" name="random" th:value="'true'">
