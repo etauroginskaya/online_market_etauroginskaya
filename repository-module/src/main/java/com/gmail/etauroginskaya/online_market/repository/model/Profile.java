@@ -17,8 +17,8 @@ import java.util.Objects;
 
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE profile SET is_deleted = '1' WHERE id = ?")
-@Where(clause = "is_deleted = '0'")
+@SQLDelete(sql = "UPDATE profile SET is_deleted = 1 WHERE user_id = ?")
+@Where(clause = "is_deleted = 0")
 public class Profile {
 
     @GenericGenerator(name = "generator",

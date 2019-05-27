@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.validation.Valid;
 
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.PageConstants.PROFILE_PAGE;
-import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.UPDATE_USER_SUCCESSFULLY;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.UPDATE_SUCCESSFULLY;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.USER_NEW_PASSWORD_NOT_EQUAL;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.USER_PASSWORD_INVALID;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.USER_PASSWORD_NOT_ENTER;
@@ -66,17 +66,17 @@ public class ProfileController {
                             userDTO.setPassword(newPassword);
                         }
                     } else {
-                        return "redirect:" + PROFILE_URL + USER_PASSWORD_INVALID;
+                        return "redirect:".concat(PROFILE_URL).concat(USER_PASSWORD_INVALID);
                     }
                 } else {
-                    return "redirect:" + PROFILE_URL + USER_NEW_PASSWORD_NOT_EQUAL;
+                    return "redirect:".concat(PROFILE_URL).concat(USER_NEW_PASSWORD_NOT_EQUAL);
                 }
             } else {
-                return "redirect:" + PROFILE_URL + USER_PASSWORD_NOT_ENTER;
+                return "redirect:".concat(PROFILE_URL).concat(USER_PASSWORD_NOT_ENTER);
             }
         }
         userDTO.setId(userPrincipal.getId());
         userService.updateUserWithProfile(userDTO, random, changePass);
-        return "redirect:" + PROFILE_URL + UPDATE_USER_SUCCESSFULLY;
+        return "redirect:".concat(PROFILE_URL).concat(UPDATE_SUCCESSFULLY);
     }
 }

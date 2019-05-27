@@ -20,24 +20,23 @@ import java.util.Set;
 
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE article SET is_deleted = '1' WHERE id = ?")
-@Where(clause = "is_deleted = '0'")
+@SQLDelete(sql = "UPDATE article SET is_deleted = 1 WHERE id = ?")
+@Where(clause = "is_deleted = 0")
 public class Article {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
     private Long id;
     private String created;
     private String title;
     private String description;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     @Column(name = "is_deleted")
     private boolean isDeleted;
-
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id")
+    @OneToMany(mappedBy = "article", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Comment> comments = new HashSet<>();
 
     public Long getId() {

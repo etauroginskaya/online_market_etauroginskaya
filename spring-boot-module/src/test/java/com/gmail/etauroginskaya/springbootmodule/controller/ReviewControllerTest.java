@@ -35,27 +35,27 @@ public class ReviewControllerTest {
     public void shouldRedirectToReviewsPageWithSuccessfullyParameterAfterSuccessfullyUpdatedReviewShow() {
         when(reviewService.updateShowReview(1L, true)).thenReturn(1);
         String resultUrl = reviewController.updateShowReview(1L, true);
-        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(UPDATE_REVIEW_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(UPDATE_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToReviewsPageWithNotSuccessfullyParameterAfterInvalidUpdatedReviewShow() {
         when(reviewService.updateShowReview(1L, true)).thenReturn(0);
         String resultUrl = reviewController.updateShowReview(1L, true);
-        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(UPDATE_REVIEW_NOT_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(UPDATE_NOT_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToReviewsPageWithSuccessfullyParameterAfterSuccessfullyDeletedReview() {
-        when(reviewService.deleteReview(1L)).thenReturn(1);
+        when(reviewService.deleteReviewById(1L)).thenReturn(1);
         String resultUrl = reviewController.deleteReview(1L);
-        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(DELETE_REVIEW_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(DELETE_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToReviewsPageWithNotSuccessfullyParameterAfterInvalidDeletedReview() {
-        when(reviewService.deleteReview(1L)).thenReturn(0);
+        when(reviewService.deleteReviewById(1L)).thenReturn(0);
         String resultUrl = reviewController.deleteReview(1L);
-        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(DELETE_REVIEW_NOT_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(REVIEWS_URL).concat(DELETE_NOT_SUCCESSFULLY)));
     }
 }

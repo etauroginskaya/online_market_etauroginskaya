@@ -5,34 +5,32 @@ import org.hibernate.annotations.Where;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @Table
-@SQLDelete(sql = "UPDATE comment SET is_deleted = 1 WHERE id = ?")
+@SQLDelete(sql = "UPDATE item SET is_deleted = 1 WHERE id = ?")
 @Where(clause = "is_deleted = 0")
-public class Comment {
+public class Item {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
-    private String created;
+    @Column(nullable = false)
+    private String name;
+    @Column(nullable = false)
     private String description;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", nullable = false)
-    private Article article;
-    @Column(name = "is_deleted")
+    @Column(name = "unique_number", updatable = false, nullable = false)
+    private String uniqueNumber;
+    @Column(nullable = false)
+    private BigDecimal price;
+    @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
     public Long getId() {
@@ -43,12 +41,12 @@ public class Comment {
         this.id = id;
     }
 
-    public String getCreated() {
-        return created;
+    public String getName() {
+        return name;
     }
 
-    public void setCreated(String created) {
-        this.created = created;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
@@ -59,20 +57,20 @@ public class Comment {
         this.description = description;
     }
 
-    public User getUser() {
-        return user;
+    public String getUniqueNumber() {
+        return uniqueNumber;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUniqueNumber(String uniqueNumber) {
+        this.uniqueNumber = uniqueNumber;
     }
 
-    public Article getArticle() {
-        return article;
+    public BigDecimal getPrice() {
+        return price;
     }
 
-    public void setArticle(Article article) {
-        this.article = article;
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
     public boolean isDeleted() {
@@ -87,14 +85,16 @@ public class Comment {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return  Objects.equals(id, comment.id) &&
-                Objects.equals(created, comment.created) &&
-                Objects.equals(user, comment.user);
+        Item item = (Item) o;
+        return Objects.equals(id, item.id) &&
+                Objects.equals(name, item.name) &&
+                Objects.equals(description, item.description) &&
+                Objects.equals(uniqueNumber, item.uniqueNumber) &&
+                Objects.equals(price, item.price);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created, user);
+        return Objects.hash(id, name, description, uniqueNumber, price);
     }
 }

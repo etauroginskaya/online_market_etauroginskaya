@@ -183,4 +183,55 @@
                                  referencedColumnNames="id"/>
     </changeSet>
 
+    <changeSet id="t_item_1" author="etauroginskaya">
+        <createTable tableName="item">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(127)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="unique_number" type="varchar(63)"/>
+            <column name="price" type="varchar(63)"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <insert tableName="item">
+            <column name="name" value="Test item"/>
+            <column name="description" value="Test item description"/>
+            <column name="unique_number" value="0ea5c481-6141-43d5-b1c4-258845263950"/>
+            <column name="price" value="15.20"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="item">
+            <column name="name" value="Item"/>
+            <column name="description" value="Test item description"/>
+            <column name="unique_number" value="4085febc-249e-427d-975b-1ed746439199"/>
+            <column name="price" value="10.00"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_article_3" author="etauroginskaya">
+        <insert tableName="article">
+            <column name="created" value="20/05/2019"/>
+            <column name="title" value="test title"/>
+            <column name="description" value="test description"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="article">
+            <column name="created" value="26/05/2019"/>
+            <column name="title" value="test title"/>
+            <column name="description" value="test description"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="article">
+            <column name="created" value="23/05/2019"/>
+            <column name="title" value="test title"/>
+            <column name="description" value="test description"/>
+            <column name="user_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

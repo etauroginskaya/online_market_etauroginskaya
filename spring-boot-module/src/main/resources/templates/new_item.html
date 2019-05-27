@@ -1,0 +1,59 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create item</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <form th:action="@{/private/items/new}" th:object="${item}" method="post" style="color: white">
+        <h1 class="h3 mb-3 font-weight-normal">
+            Please enter new item:
+        </h1>
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+            Name Error
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="name">Name</span>
+            </div>
+            <input type="text" class="form-control" aria-describedby="basic-addon1" name="name" th:value="*{name}"/>
+        </div>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="uniqueNumber">Unique number</span>
+            </div>
+            <input readonly type="text" name="uniqueNumber" th:value="*{uniqueNumber}"
+                   class="form-control" aria-describedby="basic-addon1"/>
+        </div>
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('price')}" th:errors="*{price}">
+            Price Error
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="price">Price</span>
+            </div>
+            <input type="text" class="form-control" aria-describedby="basic-addon1" name="price" th:value="*{price}"/>
+        </div>
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('description')}"
+             th:errors="*{description}">
+            Description Error
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="description">Description</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" th:field="*{description}"/>
+        </div>
+
+        <input type="submit" class="btn btn-success btn-block" value="Create item"/>
+    </form>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

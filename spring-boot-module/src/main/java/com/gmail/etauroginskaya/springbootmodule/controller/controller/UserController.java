@@ -6,7 +6,6 @@ import com.gmail.etauroginskaya.online_market.service.model.RoleDTO;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
 import com.gmail.etauroginskaya.springbootmodule.controller.controller.model.UserUpdateActionEnum;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,8 +23,16 @@ import java.util.stream.IntStream;
 
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.PageConstants.USERS_ADD_PAGE;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.PageConstants.USERS_PAGE;
-import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.*;
-import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.*;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.ADD_SUCCESSFULLY;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.DELETE_NOT_SUCCESSFULLY;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.DELETE_SUCCESSFULLY;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.UPDATE_NOT_SUCCESSFULLY;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.UPDATE_SUCCESSFULLY;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.UPDATE_USER_UNAVAILABLE;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.USERS_ADD_URL;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.USERS_DELETE_URL;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.USERS_UPDATE_URL;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.USERS_URL;
 
 @Controller
 @RequestMapping
@@ -43,7 +50,7 @@ public class UserController {
     public String getViewUsers(Model model,
                                @RequestParam(value = "page", defaultValue = "1") Integer currentPage,
                                @RequestParam(value = "size", defaultValue = "10") Integer pageSize) {
-        Page<UserDTO> userPage = userService.getUsersPageByEmailAsc(PageRequest.of(currentPage - 1, pageSize));
+        Page<UserDTO> userPage = userService.getUsersPageByEmailAsc(pageSize, currentPage - 1);
         model.addAttribute("userPage", userPage);
         int totalPages = userPage.getTotalPages();
         if (totalPages > 0) {
@@ -65,15 +72,15 @@ public class UserController {
             result = userService.updateUserPassword(id);
         }
         if (action.equals(UserUpdateActionEnum.ROLE.name())) {
-            result = userService.updateUserRole(id, newRoleID);
+            result = userService.updateUserRoleById(id, newRoleID);
             if (result == null) {
                 return "redirect:" + USERS_URL + UPDATE_USER_UNAVAILABLE;
             }
         }
         if (result > 0) {
-            return "redirect:" + USERS_URL + UPDATE_USER_SUCCESSFULLY;
+            return "redirect:" + USERS_URL + UPDATE_SUCCESSFULLY;
         }
-        return "redirect:" + USERS_URL + UPDATE_USER_NOT_SUCCESSFULLY;
+        return "redirect:" + USERS_URL + UPDATE_NOT_SUCCESSFULLY;
     }
 
     @GetMapping(USERS_ADD_URL)
@@ -94,17 +101,17 @@ public class UserController {
             return USERS_ADD_PAGE;
         }
         userService.addUser(userDTO);
-        return "redirect:" + USERS_URL + ADD_USERS_SUCCESSFULLY;
+        return "redirect:" + USERS_URL + ADD_SUCCESSFULLY;
     }
 
     @PostMapping(USERS_DELETE_URL)
     public String deleteUsers(@RequestParam(value = "listID", defaultValue = "") Long[] listID) {
         if (listID.length > 0) {
-            int result = userService.deleteUsers(Arrays.asList(listID));
+            int result = userService.deleteUsersById(Arrays.asList(listID));
             if (result > 0) {
-                return "redirect:" + USERS_URL + DELETE_USERS_SUCCESSFULLY;
+                return "redirect:" + USERS_URL + DELETE_SUCCESSFULLY;
             }
         }
-        return "redirect:" + USERS_URL + DELETE_USERS_NOT_SUCCESSFULLY;
+        return "redirect:" + USERS_URL + DELETE_NOT_SUCCESSFULLY;
     }
 }

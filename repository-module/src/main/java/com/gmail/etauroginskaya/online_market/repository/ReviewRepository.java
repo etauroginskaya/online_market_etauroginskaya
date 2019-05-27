@@ -2,16 +2,11 @@ package com.gmail.etauroginskaya.online_market.repository;
 
 import com.gmail.etauroginskaya.online_market.repository.model.Review;
 
-import java.sql.Connection;
 import java.util.List;
 
-public interface ReviewRepository extends ConnectionRepository {
+public interface ReviewRepository extends GenericRepository<Long, Review> {
 
-    List<Review> getReviewsInBatch(Connection connection, int page, int quantityReviewsInBatch);
+    int deleteReviewsById(List<Long> reviewsId);
 
-    int getQuantityReviews(Connection connection);
-
-    int deleteListReviews(Connection connection, List<Review> reviews);
-
-    int updateReviewStatusShow(Connection connection, Long id, boolean newShowStatus);
+    int updateReviewStatusShow(Long id, boolean newShowStatus);
 }

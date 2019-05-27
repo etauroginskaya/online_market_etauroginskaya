@@ -18,7 +18,9 @@ import java.util.Collection;
 
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.ADMIN_ROLE_NAME;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.CUSTOMER_ROLE_NAME;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.SALE_ROLE_NAME;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ARTICLES_URL;
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ITEMS_URL;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.USERS_URL;
 
 public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -54,6 +56,8 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
                     return USERS_URL;
                 case CUSTOMER_ROLE_NAME:
                     return ARTICLES_URL;
+                case SALE_ROLE_NAME:
+                    return ITEMS_URL;
             }
         }
         logger.warn(String.format("No authentication success handler for user: %s",

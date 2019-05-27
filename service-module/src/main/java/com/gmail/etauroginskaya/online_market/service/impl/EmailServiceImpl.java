@@ -32,7 +32,7 @@ public class EmailServiceImpl implements EmailService {
         message.setText(text);
         try {
             mailSender.send(message);
-            logger.info(String.format("Message to email %s successfully sent", to));
+            logger.debug(String.format("Message to email %s successfully sent", to));
         } catch (MailException e) {
             logger.error(e.getMessage(), e);
             throw new ServiceMailException(String.format("Message to email %s don't sent", to), e);

@@ -83,50 +83,50 @@ public class UserControllerTest {
         when(bindingResult.hasErrors()).thenReturn(false);
         Model model = new ExtendedModelMap();
         String pageAfterAdd = userController.addUser(new UserDTO(), bindingResult, model);
-        assertThat(pageAfterAdd, equalTo("redirect:".concat(USERS_URL).concat(ADD_USERS_SUCCESSFULLY)));
+        assertThat(pageAfterAdd, equalTo("redirect:".concat(USERS_URL).concat(ADD_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToUsersPageWithSuccessfullyParameterAfterSuccessfullyDeletedUser(){
         Long[] longArray = {1L, 2L};
-        when(userService.deleteUsers(Arrays.asList(longArray))).thenReturn(1);
+        when(userService.deleteUsersById(Arrays.asList(longArray))).thenReturn(1);
         String resultUrl = userController.deleteUsers(longArray);
-        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(DELETE_USERS_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(DELETE_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToUsersPageWithNotSuccessfullyParameterAfterInvalidDeletedUser(){
         Long[] longArray = {1L, 2L};
-        when(userService.deleteUsers(Arrays.asList(longArray))).thenReturn(0);
+        when(userService.deleteUsersById(Arrays.asList(longArray))).thenReturn(0);
         String resultUrl = userController.deleteUsers(longArray);
-        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(DELETE_USERS_NOT_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(DELETE_NOT_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToUsersPageWithSuccessfullyParameterAfterSuccessfullyUpdatedUserPassword(){
         when(userService.updateUserPassword(1L)).thenReturn(1);
         String resultUrl = userController.updateUser(1L,1L," PASSWORD");
-        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_USER_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToUsersPageWithNotSuccessfullyParameterAfterInvalidUpdatedUserPassword(){
         when(userService.updateUserPassword(1L)).thenReturn(0);
         String resultUrl = userController.updateUser(1L,1L," PASSWORD");
-        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_USER_NOT_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_NOT_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToUsersPageWithSuccessfullyParameterAfterSuccessfullyUpdatedUserRole(){
-        when(userService.updateUserRole(1L, 1L)).thenReturn(1);
+        when(userService.updateUserRoleById(1L, 1L)).thenReturn(1);
         String resultUrl = userController.updateUser(1L,1L," ROLE");
-        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_USER_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_SUCCESSFULLY)));
     }
 
     @Test
     public void shouldRedirectToUsersPageWithNotSuccessfullyParameterAfterInvalidUpdatedUserRole(){
-        when(userService.updateUserRole(1L,1L)).thenReturn(0);
+        when(userService.updateUserRoleById(1L,1L)).thenReturn(0);
         String resultUrl = userController.updateUser(1L,1L," ROLE");
-        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_USER_NOT_SUCCESSFULLY)));
+        assertThat(resultUrl, equalTo("redirect:".concat(USERS_URL).concat(UPDATE_NOT_SUCCESSFULLY)));
     }
 }

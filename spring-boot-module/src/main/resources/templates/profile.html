@@ -28,7 +28,7 @@
         </div>
     </div>
     <div class="row justify-content-center">
-        <form th:action="@{/profile(newPassword=${model},repeatPassword=${model})}"
+        <form th:action="@{/private/profile(newPassword=${model},repeatPassword=${model})}"
               th:object="${user}" method="post" style="color: white">
             <h1 class="h3 mb-3 font-weight-normal">Please correct your profile: </h1>
             <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
