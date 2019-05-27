@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create article</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <form th:action="@{/private/articles/new}" th:object="${article}" method="post" style="color: white">
+        <h1 class="h3 mb-3 font-weight-normal">
+            Please enter new article:
+        </h1>
+
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text">Date</span>
+            </div>
+            <span th:text="${currentData}" class="form-control" aria-describedby="basic-addon1"/>
+        </div>
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">
+            Title Error
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="title">Title</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" th:field="*{title}"/>
+        </div>
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('description')}"
+             th:errors="*{description}">
+            Description Error
+        </div>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="description">Description</span>
+            </div>
+            <textarea class="form-control" aria-label="With textarea" th:field="*{description}"/>
+        </div>
+
+        <input type="submit" class="btn btn-success btn-block" value="Save article"/>
+    </form>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

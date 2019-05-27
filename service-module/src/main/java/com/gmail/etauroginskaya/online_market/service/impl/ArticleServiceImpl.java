@@ -16,6 +16,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,6 +27,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     private static Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
     private static int LIMIT_SHORT_DESCRIPTION = 200;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     private final ArticleRepository articleRepository;
     private final ArticleConverter articleConverter;
@@ -43,7 +46,7 @@ public class ArticleServiceImpl implements ArticleService {
         if (quantityEntity < startItem) {
             dtos = Collections.emptyList();
         } else {
-            List<Article> articles = articleRepository.getLimitEntityWithOffset(startItem, pageSize);
+            List<Article> articles = articleRepository.getArticlesByCreatedDesc(startItem, pageSize);
             dtos = articles.stream()
                     .map(articleConverter::toDTO)
                     .collect(Collectors.toList());
@@ -62,16 +65,19 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public ArticleDTO addArticle(ArticleDTO articleDTO) {
+        articleDTO.setCreated(LocalDateTime.now().format(formatter));
         Article article = articleConverter.toEntity(articleDTO);
-        Comment comment = new Comment();
-        for (CommentDTO commentDTO : articleDTO.getComments()) {
-            comment.setCreated(commentDTO.getCreated());
-            comment.setDescription(commentDTO.getDescription());
-            User user = new User();
-            user.setId(commentDTO.getUserDTO().getId());
-            comment.setUser(user);
+        if (!articleDTO.getComments().isEmpty()) {
+            Comment comment = new Comment();
+            for (CommentDTO commentDTO : articleDTO.getComments()) {
+                comment.setCreated(commentDTO.getCreated());
+                comment.setDescription(commentDTO.getDescription());
+                User user = new User();
+                user.setId(commentDTO.getUserDTO().getId());
+                comment.setUser(user);
+            }
+            article.setComments(Collections.singleton(comment));
         }
-        article.setComments(Collections.singleton(comment));
         articleRepository.persist(article);
         return articleConverter.toDTO(article);
     }
@@ -89,5 +95,15 @@ public class ArticleServiceImpl implements ArticleService {
     public void deleteArticleById(Long id) {
         Article article = articleRepository.getById(id);
         articleRepository.remove(article);
+    }
+
+    @Override
+    @Transactional
+    public void updateArticleTitleAndDescription(ArticleDTO articleDTO) {
+        Article article = articleRepository.getById(articleDTO.getId());
+        article.setTitle(articleDTO.getTitle());
+        article.setDescription(articleDTO.getDescription());
+        article.setCreated(LocalDateTime.now().format(formatter));
+        articleRepository.merge(article);
     }
 }

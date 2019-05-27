@@ -9,7 +9,7 @@
     </div>
 </head>
 <body>
-<div th:fragment="header">
+<div th:fragment="header" class="mb-3">
     <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
@@ -36,12 +36,27 @@
                 </span>
                 <span sec:authorize="isAuthenticated()">
                     <span sec:authorize="hasAuthority('Customer User')">
-                        <a class="nav-item nav-link" th:href="@{/articles}">Articles</a>
+                        <a class="nav-item nav-link" th:href="@{/private/articles}">Articles</a>
                     </span>
                 </span>
                 <span sec:authorize="isAuthenticated()">
                     <span sec:authorize="hasAuthority('Customer User')">
-                        <a class="nav-item nav-link" th:href="@{/profile}">Profile</a>
+                        <a class="nav-item nav-link" th:href="@{/private/profile}">Profile</a>
+                    </span>
+                </span>
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+                        <a class="nav-item nav-link" th:href="@{/private/articles}">Articles</a>
+                    </span>
+                </span>
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+                        <a class="nav-item nav-link" th:href="@{/private/articles/new}">New article</a>
+                    </span>
+                </span>
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+                        <a class="nav-item nav-link" th:href="@{/private/items}">Items</a>
                     </span>
                 </span>
             </div>

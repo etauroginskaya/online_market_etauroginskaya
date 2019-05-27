@@ -9,15 +9,12 @@ public class ArticleDTO {
 
     private Long id;
     private String created;
-
     @NotBlank
+    @Size(max = 200)
     private String title;
-
     @NotBlank
     @Size(max = 1000)
     private String description;
-
-    @NotBlank
     private UserDTO user;
     private List<CommentDTO> comments = new ArrayList<>();
 
