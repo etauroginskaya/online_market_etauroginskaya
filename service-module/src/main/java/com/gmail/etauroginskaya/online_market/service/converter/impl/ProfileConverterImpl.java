@@ -15,12 +15,4 @@ public class ProfileConverterImpl implements ProfileConverter {
         profileDTO.setTelephone(profile.getTelephone());
         return profileDTO;
     }
-
-    @Override
-    public Profile toEntity(ProfileDTO profileDTO) {
-        Profile profile = new Profile();
-        profile.setAddress(profileDTO.getAddress());
-        profile.setTelephone(profileDTO.getTelephone());
-        return profile;
-    }
 }

@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import java.util.Objects;
 
 @Entity
 @Table
@@ -22,14 +23,16 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
+    @Column(updatable = false, nullable = false)
     private String description;
+    @Column(updatable = false, nullable = false)
     private String created;
-    @Column(name = "show")
+    @Column(name = "`show`", nullable = false)
     private boolean isShow;
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
     private User user;
-    @Column(name = "deleted")
+    @Column(name = "deleted", nullable = false)
     private boolean isDeleted;
 
     public Long getId() {
@@ -78,5 +81,20 @@ public class Review {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return isShow == review.isShow &&
+                Objects.equals(id, review.id) &&
+                Objects.equals(description, review.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, isShow);
     }
 }

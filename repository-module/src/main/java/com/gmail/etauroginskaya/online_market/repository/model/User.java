@@ -19,23 +19,26 @@ import java.util.Objects;
 @Entity
 @Table
 @SQLDelete(sql = "UPDATE user SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted = '0'")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
+    @Column(nullable = false)
     private String surname;
+    @Column(nullable = false)
     private String name;
+    @Column(updatable = false, nullable = false, unique = true)
     private String email;
+    @Column(nullable = false)
     private String password;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
-    @Column(name = "deleted")
+    @Column(name = "deleted", nullable = false)
     private boolean isDeleted;
 
     public Long getId() {

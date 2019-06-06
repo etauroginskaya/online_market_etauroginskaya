@@ -1,5 +1,7 @@
 package com.gmail.etauroginskaya.online_market.service.model;
 
+import com.gmail.etauroginskaya.online_market.service.validator.annotations.UniqueEmail;
+
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -11,17 +13,18 @@ public class UserDTO {
 
     @NotBlank
     @Size(max = 40)
-    @Pattern(regexp = "[A-Za-z]+", message = "Only Latin characters must be used!")
+    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!")
     private String surname;
 
     @NotBlank
     @Size(max = 20)
-    @Pattern(regexp = "[A-Za-z]+", message = "Only Latin characters must be used!")
+    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!")
     private String name;
 
     @NotBlank
     @Size(max = 50)
     @Email
+    @UniqueEmail
     private String email;
 
     private String password;

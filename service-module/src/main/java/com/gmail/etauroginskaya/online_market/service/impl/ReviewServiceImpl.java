@@ -5,24 +5,25 @@ import com.gmail.etauroginskaya.online_market.repository.model.Review;
 import com.gmail.etauroginskaya.online_market.service.ReviewService;
 import com.gmail.etauroginskaya.online_market.service.converter.ReviewConverter;
 import com.gmail.etauroginskaya.online_market.service.model.ReviewDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gmail.etauroginskaya.online_market.service.constants.FormatConstants.DATE_FORMATTER;
 import static java.util.Arrays.asList;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ReviewServiceImpl.class);
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
     private final ReviewRepository reviewRepository;
     private final ReviewConverter reviewConverter;
 
@@ -34,6 +35,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     @Transactional
     public Page<ReviewDTO> getReviewsPage(int pageSize, int currentPage) {
+        currentPage--;
         int startItem = currentPage * pageSize;
         int quantityReviews = reviewRepository.getCountOfEntities();
         List<ReviewDTO> dtos;
@@ -45,8 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
                     .map(reviewConverter::toDTO)
                     .collect(Collectors.toList());
         }
-        Page<ReviewDTO> reviewPage = new PageImpl<>(dtos, PageRequest.of(currentPage, pageSize), quantityReviews);
-        return reviewPage;
+        return new PageImpl<>(dtos, PageRequest.of(currentPage, pageSize), quantityReviews);
     }
 
     @Override
@@ -59,5 +60,14 @@ public class ReviewServiceImpl implements ReviewService {
     @Transactional
     public int deleteReviewById(Long id) {
         return reviewRepository.deleteReviewsById(asList(id));
+    }
+
+    @Override
+    @Transactional
+    public void addReview(ReviewDTO reviewDTO) {
+        Review review = reviewConverter.fromDTO(reviewDTO);
+        review.setCreated(LocalDateTime.now().format(formatter));
+        review.setShow(true);
+        reviewRepository.persist(review);
     }
 }

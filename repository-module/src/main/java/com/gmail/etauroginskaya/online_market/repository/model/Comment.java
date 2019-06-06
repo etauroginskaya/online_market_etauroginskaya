@@ -24,15 +24,17 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(updatable = false, nullable = false)
     private Long id;
+    @Column(updatable = false, nullable = false)
     private String created;
+    @Column(updatable = false, nullable = false)
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
     private User user;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "article_id", nullable = false)
     private Article article;
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
     public Long getId() {
@@ -88,13 +90,14 @@ public class Comment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
-        return  Objects.equals(id, comment.id) &&
+        return Objects.equals(id, comment.id) &&
                 Objects.equals(created, comment.created) &&
-                Objects.equals(user, comment.user);
+                Objects.equals(description, comment.description) &&
+                Objects.equals(article, comment.article);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, created, user);
+        return Objects.hash(id, created, description, article);
     }
 }

@@ -1,27 +1,25 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<configuration status="DEBUG">
-    <appenders>
-        <Console name="Console" target="SYSTEM_OUT">
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="LogToConsole" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
         </Console>
-
-        <RollingFile
-                name="File"
-                fileName="logs/application.log"
-                filePattern="logs/application.%d{dd-MMM}.log.zip"
-                ignoreExceptions="false">
-            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+        <RollingFile name="LogToRollingFile" fileName="logs/application.log"
+                     filePattern="logs/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout>
+                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+            </PatternLayout>
             <Policies>
+                <TimeBasedTriggeringPolicy/>
                 <SizeBasedTriggeringPolicy size="10 MB"/>
             </Policies>
-            <DefaultRolloverStrategy max="5"/>
+            <DefaultRolloverStrategy max="10"/>
         </RollingFile>
-    </appenders>
+    </Appenders>
 
-    <loggers>
-        <root level="debug">
-            <appender-ref ref="Console" level="debug"/>
-            <appender-ref ref="File" level="debug"/>
-        </root>
-    </loggers>
-</configuration>
+    <Loggers>
+        <Root level="debug">
+            <AppenderRef ref="LogToConsole"/>
+            <AppenderRef ref="LogToRollingFile"/>
+        </Root>
+    </Loggers>
+</Configuration>

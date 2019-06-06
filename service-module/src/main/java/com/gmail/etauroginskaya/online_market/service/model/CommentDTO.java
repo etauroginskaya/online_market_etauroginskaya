@@ -6,6 +6,7 @@ public class CommentDTO {
     private String created;
     private String description;
     private UserDTO userDTO;
+    private Long articleID;
 
     public Long getId() {
         return id;
@@ -37,5 +38,13 @@ public class CommentDTO {
 
     public void setUserDTO(UserDTO userDTO) {
         this.userDTO = userDTO;
+    }
+
+    public Long getArticleID() {
+        return articleID;
+    }
+
+    public void setArticleID(Long articleID) {
+        this.articleID = articleID;
     }
 }

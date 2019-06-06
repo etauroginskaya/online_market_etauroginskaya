@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CatalogItem xs:schemaLocation="http://www.it-academy.by"
+             xmlns:xs="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.it-academy.by">
+    <Item>
+        <name>Book</name>
+        <description>Description book</description>
+        <price>4.96</price>
+    </Item>
+    <Item>
+        <name>Cup</name>
+        <description>Gud cup</description>
+        <price>1.15</price>
+    </Item>
+    <Item>
+        <name>Plate</name>
+        <description>Beautiful plate</description>
+        <price>11.00</price>
+    </Item>
+    <Item>
+        <name>Table</name>
+        <description>Description table</description>
+        <price>15.20</price>
+    </Item>
+    <Item>
+        <name>Chair</name>
+        <description>Strong chair</description>
+        <price>15.20</price>
+    </Item>
+    <Item>
+        <name>Pencil</name>
+        <description>Rad pencil</description>
+        <price>2.20</price>
+    </Item>
+    <Item>
+        <name>Pencil</name>
+        <description>White pencil</description>
+        <price>2.20</price>
+    </Item>
+    <Item>
+        <name>Pencil</name>
+        <description>Black pencil</description>
+        <price>2.20</price>
+    </Item>
+    <Item>
+        <name>Pencil</name>
+        <description>Blue pencil</description>
+        <price>2.20</price>
+    </Item>
+    <Item>
+        <name>Door</name>
+        <description>Door dark</description>
+        <price>40.00</price>
+    </Item>
+    <Item>
+        <name>Lamp</name>
+        <description>Light lamp</description>
+        <price>3.11</price>
+    </Item>
+</CatalogItem>

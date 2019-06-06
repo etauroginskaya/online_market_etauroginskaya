@@ -3,7 +3,7 @@ package com.gmail.etauroginskaya.springbootmodule.controller.controller;
 import com.gmail.etauroginskaya.online_market.service.UserService;
 import com.gmail.etauroginskaya.online_market.service.model.AppUserPrincipal;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
-import com.gmail.etauroginskaya.online_market.service.util.CoderUtil;
+import com.gmail.etauroginskaya.online_market.service.CoderService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,11 +28,11 @@ import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlC
 public class ProfileController {
 
     private final UserService userService;
-    private final CoderUtil coderUtil;
+    private final CoderService coderService;
 
-    public ProfileController(UserService userService, CoderUtil coderUtil) {
+    public ProfileController(UserService userService, CoderService coderService) {
         this.userService = userService;
-        this.coderUtil = coderUtil;
+        this.coderService = coderService;
     }
 
     @GetMapping(PROFILE_URL)
@@ -60,7 +60,7 @@ public class ProfileController {
             if (!userDTO.getPassword().isEmpty()) {
                 if (newPassword.equals(repeatPassword) || random) {
                     String dbPassword = userService.getPasswordByUserId(userPrincipal.getId());
-                    if (coderUtil.checkPassword(userDTO.getPassword(), dbPassword)) {
+                    if (coderService.checkPassword(userDTO.getPassword(), dbPassword)) {
                         if (!random) {
                             changePass = true;
                             userDTO.setPassword(newPassword);

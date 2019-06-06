@@ -6,6 +6,4 @@ import com.gmail.etauroginskaya.online_market.service.model.ProfileDTO;
 public interface ProfileConverter {
 
     ProfileDTO toDTO(Profile profile);
-
-    Profile toEntity(ProfileDTO profileDTO);
 }

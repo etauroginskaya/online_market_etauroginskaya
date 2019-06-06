@@ -12,9 +12,13 @@ public interface UserRepository extends GenericRepository<Long, User> {
 
     int deleteUsersById(List<Long> listID);
 
+    void deleteProfilesById(List<Long> listID);
+
     int updateUserPasswordById(Long id, String newPassword);
 
     int updateUserRoleById(Long userID, Long newRoleID);
 
     String getUserPasswordById(Long id);
+
+    boolean existsByEmail(String email);
 }

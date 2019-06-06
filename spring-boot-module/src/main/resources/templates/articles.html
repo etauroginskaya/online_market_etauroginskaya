@@ -64,7 +64,7 @@
     </table>
 
     <nav aria-label="Page navigation example">
-        <ul th:if="${articlePage.totalPages > 0}" class="pagination justify-content-center">
+        <ul th:if="${articlePage.totalPages > 1}" class="pagination justify-content-center">
             <li class="page-item" th:each="pageNumber : ${pageNumbers}">
                 <a class="page-link" th:href="@{/private/articles(size=${articlePage.size}, page=${pageNumber})}"
                    th:text="${pageNumber}"

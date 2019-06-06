@@ -5,8 +5,6 @@ import com.gmail.etauroginskaya.online_market.repository.model.Item;
 import com.gmail.etauroginskaya.online_market.service.ItemService;
 import com.gmail.etauroginskaya.online_market.service.converter.ItemConverter;
 import com.gmail.etauroginskaya.online_market.service.model.ItemDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -15,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ItemServiceImpl.class);
     private final ItemRepository itemRepository;
     private final ItemConverter itemConverter;
 
@@ -32,34 +30,40 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public Page<ItemDTO> getItemPageByNameAsc(int pageSize, int currentPage) {
+        currentPage--;
         int startItem = currentPage * pageSize;
         int quantityEntity = itemRepository.getCountOfEntities();
         List<ItemDTO> dtos;
         if (quantityEntity < startItem) {
             dtos = Collections.emptyList();
         } else {
-            List<Item> articles = itemRepository.getItemsByNameAsc(startItem, pageSize);
-            dtos = articles.stream()
+            List<Item> items = itemRepository.getItemsByNameAsc(startItem, pageSize);
+            dtos = items.stream()
                     .map(itemConverter::toDTO)
                     .collect(Collectors.toList());
         }
-        Page<ItemDTO> itemPage = new PageImpl<>(dtos, PageRequest.of(currentPage, pageSize), quantityEntity);
-        return itemPage;
+        return new PageImpl<>(dtos, PageRequest.of(currentPage, pageSize), quantityEntity);
     }
 
     @Override
     @Transactional
     public ItemDTO getItemById(Long id) {
         Item item = itemRepository.getById(id);
-        ItemDTO itemDTO = itemConverter.toDTO(item);
-        return itemDTO;
+        if (item.isDeleted()) {
+            return null;
+        }
+        return itemConverter.toDTO(item);
     }
 
     @Override
     @Transactional
-    public void deleteItemById(Long id) {
+    public ItemDTO deleteItemById(Long id) {
         Item item = itemRepository.getById(id);
+        if (item.isDeleted() == true) {
+            return null;
+        }
         itemRepository.remove(item);
+        return itemConverter.toDTO(item);
     }
 
     @Override
@@ -72,9 +76,25 @@ public class ItemServiceImpl implements ItemService {
     @Override
     @Transactional
     public List<ItemDTO> getAllItems() {
-        List<ItemDTO> dtos = itemRepository.getAll().stream()
+        return itemRepository.getAll().stream()
                 .map(itemConverter::toDTO)
                 .collect(Collectors.toList());
-        return dtos;
+    }
+
+    @Override
+    @Transactional
+    public int addItems(List<ItemDTO> dtos) {
+        int countAddedItems = 0;
+        for (ItemDTO dto : dtos) {
+            dto.setUniqueNumber(UUID.randomUUID().toString());
+        }
+        List<Item> items = dtos.stream()
+                .map(itemConverter::toEntity)
+                .collect(Collectors.toList());
+        for (Item item : items) {
+            itemRepository.persist(item);
+            countAddedItems++;
+        }
+        return countAddedItems;
     }
 }

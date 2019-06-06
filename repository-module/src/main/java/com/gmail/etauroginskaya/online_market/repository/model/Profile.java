@@ -18,7 +18,6 @@ import java.util.Objects;
 @Entity
 @Table
 @SQLDelete(sql = "UPDATE profile SET is_deleted = 1 WHERE user_id = ?")
-@Where(clause = "is_deleted = 0")
 public class Profile {
 
     @GenericGenerator(name = "generator",
@@ -26,13 +25,14 @@ public class Profile {
             parameters = @Parameter(name = "property", value = "user"))
     @Id
     @GeneratedValue(generator = "generator")
+    @Column(updatable = false, nullable = false)
     private Long userId;
     @OneToOne(fetch = FetchType.LAZY)
     @PrimaryKeyJoinColumn(name = "user_id")
     private User user;
     private String address;
     private String telephone;
-    @Column(name = "is_deleted")
+    @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
     public Long getUserId() {

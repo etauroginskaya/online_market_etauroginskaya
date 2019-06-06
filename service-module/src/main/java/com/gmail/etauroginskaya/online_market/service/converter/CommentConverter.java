@@ -8,4 +8,6 @@ public interface CommentConverter {
     CommentDTO toDTO(Comment comment);
 
     Comment toEntity(CommentDTO commentDTO);
+
+    Comment toEntityForSave(CommentDTO commentDTO);
 }

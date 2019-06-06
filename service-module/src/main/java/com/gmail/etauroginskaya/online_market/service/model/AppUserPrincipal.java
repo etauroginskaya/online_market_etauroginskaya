@@ -11,7 +11,6 @@ public class AppUserPrincipal implements UserDetails {
 
     private UserDTO user;
     private Collection<GrantedAuthority> authorities;
-    private Long id;
 
     public AppUserPrincipal(UserDTO user) {
         this.user = user;

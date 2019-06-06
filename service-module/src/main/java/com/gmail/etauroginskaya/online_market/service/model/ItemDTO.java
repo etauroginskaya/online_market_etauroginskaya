@@ -17,7 +17,7 @@ public class ItemDTO {
     private String description;
     private String uniqueNumber;
     @NotNull
-    @DecimalMin(value = "0.1")
+    @DecimalMin(value = "0.01")
     private BigDecimal price;
 
     public Long getId() {

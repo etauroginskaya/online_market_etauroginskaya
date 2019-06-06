@@ -8,8 +8,6 @@ import com.gmail.etauroginskaya.online_market.service.ArticleService;
 import com.gmail.etauroginskaya.online_market.service.converter.ArticleConverter;
 import com.gmail.etauroginskaya.online_market.service.model.ArticleDTO;
 import com.gmail.etauroginskaya.online_market.service.model.CommentDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -22,12 +20,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.gmail.etauroginskaya.online_market.service.constants.FormatConstants.DATE_FORMATTER;
+
 @Service
 public class ArticleServiceImpl implements ArticleService {
 
-    private static Logger logger = LoggerFactory.getLogger(ArticleServiceImpl.class);
     private static int LIMIT_SHORT_DESCRIPTION = 200;
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
 
     private final ArticleRepository articleRepository;
     private final ArticleConverter articleConverter;
@@ -40,6 +39,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public Page<ArticleDTO> getArticlePage(int pageSize, int currentPage) {
+        currentPage--;
         int startItem = currentPage * pageSize;
         int quantityEntity = articleRepository.getCountOfEntities();
         List<ArticleDTO> dtos;
@@ -58,8 +58,15 @@ public class ArticleServiceImpl implements ArticleService {
                 }
             }
         }
-        Page<ArticleDTO> articlePage = new PageImpl<>(dtos, PageRequest.of(currentPage, pageSize), quantityEntity);
-        return articlePage;
+        return new PageImpl<>(dtos, PageRequest.of(currentPage, pageSize), quantityEntity);
+    }
+
+    @Override
+    @Transactional
+    public List<ArticleDTO> getAllArticles() {
+        return articleRepository.getAll().stream()
+                .map(articleConverter::toDTOForAPI)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -86,15 +93,21 @@ public class ArticleServiceImpl implements ArticleService {
     @Transactional
     public ArticleDTO getArticleById(Long id) {
         Article article = articleRepository.getById(id);
-        ArticleDTO articleDTO = articleConverter.toDTO(article);
-        return articleDTO;
+        if (article == null) {
+            return null;
+        }
+        return articleConverter.toDTO(article);
     }
 
     @Override
     @Transactional
-    public void deleteArticleById(Long id) {
+    public ArticleDTO deleteArticleById(Long id) {
         Article article = articleRepository.getById(id);
-        articleRepository.remove(article);
+        if (article != null) {
+            articleRepository.remove(article);
+            return articleConverter.toDTOForAPI(article);
+        }
+        return null;
     }
 
     @Override

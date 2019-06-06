@@ -2,6 +2,8 @@ package com.gmail.etauroginskaya.springbootmodule.controller.controller;
 
 import com.gmail.etauroginskaya.online_market.service.ItemService;
 import com.gmail.etauroginskaya.online_market.service.model.ItemDTO;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,8 +31,12 @@ public class ItemAPIController {
     }
 
     @GetMapping(API_ITEM_URL)
-    public ItemDTO getItemById(@PathVariable("id") Long id) {
-        return itemService.getItemById(id);
+    public ResponseEntity getItemById(@PathVariable("id") Long id) {
+        ItemDTO itemDTO = itemService.getItemById(id);
+        if (itemDTO == null) {
+            return new ResponseEntity("Not found item or item is deleted", HttpStatus.NOT_FOUND);
+        } else
+            return new ResponseEntity(itemDTO, HttpStatus.OK);
     }
 
     @PostMapping(API_ITEMS_URL)
@@ -39,7 +45,11 @@ public class ItemAPIController {
     }
 
     @DeleteMapping(API_ITEM_URL)
-    public void deleteItemById(@PathVariable("id") Long id) {
-        itemService.deleteItemById(id);
+    public ResponseEntity deleteItemById(@PathVariable("id") Long id) {
+        ItemDTO itemDTO = itemService.deleteItemById(id);
+        if (itemDTO == null) {
+            return new ResponseEntity("Not found item or item is deleted", HttpStatus.NOT_FOUND);
+        } else
+            return new ResponseEntity(HttpStatus.OK);
     }
 }

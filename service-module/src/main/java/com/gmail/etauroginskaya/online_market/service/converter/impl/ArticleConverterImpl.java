@@ -10,6 +10,7 @@ import com.gmail.etauroginskaya.online_market.service.model.CommentDTO;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -55,5 +56,35 @@ public class ArticleConverterImpl implements ArticleConverter {
                 .collect(Collectors.toSet());
         article.setComments(comments);
         return article;
+    }
+
+    @Override
+    public ArticleDTO toDTOForAPI(Article article) {
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setId(article.getId());
+        articleDTO.setCreated(article.getCreated());
+        articleDTO.setTitle(article.getTitle());
+        articleDTO.setDescription(article.getDescription());
+        UserDTO userDTO = new UserDTO();
+        userDTO.setSurname(article.getUser().getSurname());
+        userDTO.setName(article.getUser().getName());
+        articleDTO.setUser(userDTO);
+        List<CommentDTO> dtos = new ArrayList<>();
+        CommentDTO commentDTO = new CommentDTO();
+        for (Comment comment : article.getComments()) {
+            commentDTO.setArticleID(comment.getArticle().getId());
+            commentDTO.setDescription(comment.getDescription());
+            commentDTO.setCreated(comment.getCreated());
+            commentDTO.setId(comment.getId());
+            UserDTO commentUser = new UserDTO();
+            commentUser.setId(comment.getUser().getId());
+            commentUser.setSurname(comment.getUser().getSurname());
+            commentUser.setName(comment.getUser().getName());
+            commentUser.setEmail(comment.getUser().getEmail());
+            commentDTO.setUserDTO(commentUser);
+            dtos.add(commentDTO);
+        }
+        articleDTO.setComments(dtos);
+        return articleDTO;
     }
 }

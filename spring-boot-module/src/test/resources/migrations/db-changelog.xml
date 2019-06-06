@@ -234,4 +234,47 @@
         </insert>
     </changeSet>
 
+    <changeSet id="t_order_1" author="etauroginskaya">
+        <createTable tableName="order">
+            <column name="unique_number" type="bigint"/>
+            <column name="user_id" type="bigint"/>
+            <column name="item_id" type="bigint"/>
+            <column name="status" type="varchar(63)"/>
+            <column name="created" type="varchar(63)"/>
+            <column name="quantity" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id"
+                                 constraintName="fk_order_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="item_id"
+                                 constraintName="fk_order_item"
+                                 referencedTableName="item"
+                                 referencedColumnNames="id"/>
+        <insert tableName="order">
+            <column name="unique_number" valueNumeric="1234567891"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="item_id" valueNumeric="1"/>
+            <column name="status" value="NEW"/>
+            <column name="created" value="2019-05-29 15:32"/>
+            <column name="quantity" valueNumeric="3"/>
+        </insert>
+        <insert tableName="order">
+            <column name="unique_number" valueNumeric="1234567892"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="item_id" valueNumeric="2"/>
+            <column name="status" value="DELIVERED"/>
+            <column name="created" value="2019-05-30 16:27"/>
+            <column name="quantity" valueNumeric="1"/>
+        </insert>
+        <insert tableName="order">
+            <column name="unique_number" valueNumeric="1234567893"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="item_id" valueNumeric="2"/>
+            <column name="status" value="REJECTED"/>
+            <column name="created" value="2019-05-30 16:30"/>
+            <column name="quantity" valueNumeric="5"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

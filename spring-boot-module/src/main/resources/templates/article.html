@@ -14,6 +14,11 @@
             Comment deleted.
         </div>
     </div>
+    <div th:if="${param.added}">
+        <div class="alert alert-success text-center">
+            Comment added.
+        </div>
+    </div>
     <form th:action="@{/private/articles/{id}/update(id=${article.id})}" th:object="${article}" method="post">
         <table class="table table-hover table-dark">
             <thead>
@@ -27,15 +32,17 @@
                     <div sec:authorize="isAuthenticated()">
                     <span sec:authorize="hasAuthority('Sale User')">
                         <input type="text" class="form-control" aria-describedby="basic-addon1"
-                               name="title" th:value="${article.title}"/>
+                               maxlength="200" name="title" th:value="${article.title}"/>
                     </span>
                         <span sec:authorize="hasAuthority('Customer User')">
                             <span th:text="${article.title}"/>
                         </span>
                     </div>
                 </td>
-                <td th:if="${#fields.hasErrors('title')}" th:errors="${article.title}">Title Error</td>
             </tr>
+            <div th:if="${#fields.hasErrors('title')}">
+                <div class="alert alert-danger text-center" th:errors="${article.title}">Title Error</div>
+            </div>
             <tr>
                 <td>Author:</td>
                 <td><span th:text="${article.user.surname} +' '+ ${article.user.name}"/></td>
@@ -46,16 +53,17 @@
                     <div sec:authorize="isAuthenticated()">
                     <span sec:authorize="hasAuthority('Sale User')">
                     <input type="text" class="form-control" aria-describedby="basic-addon1"
-                           name="description" th:value="${article.description}"/>
+                           maxlength="1000" name="description" th:value="${article.description}"/>
                     </span>
                         <span sec:authorize="hasAuthority('Customer User')">
                             <span th:text="${article.description}"/>
                         </span>
                     </div>
                 </td>
-                <td th:if="${#fields.hasErrors('description')}" th:errors="${article.description}">Description Error
-                </td>
             </tr>
+            <div th:if="${#fields.hasErrors('description')}">
+                <div class="alert alert-danger text-center" th:errors="${article.description}">Description Error</div>
+            </div>
         </table>
         <div sec:authorize="isAuthenticated()">
                     <span sec:authorize="hasAuthority('Sale User')">
@@ -97,6 +105,21 @@
             </tbody>
         </table>
     </th:block>
+    <div class="mb-3"/>
+    <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Customer User')">
+            <form action="#" th:action="@{/private/comment/new}" th:object="${comment}" method="post">
+            <input hidden name="articleID" th:value="${article.id}">
+        <div class="input-group mb-3">
+            <textarea rows="3" maxlength="1000" placeholder="Enter your comment" class="form-control"
+                      aria-label="With textarea" th:field="*{description}" required/>
+        </div>
+                <div class="col-xs-3 col-sm-3 col-md-3">
+                <input type="submit" class="btn btn-success btn-block" value="Add new comment"/>
+                </div>
+            </form>
+                    </span>
+    </div>
 </div>
 <div th:replace="fragments/footer :: footer"/>
 </body>

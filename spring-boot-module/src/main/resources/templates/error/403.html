@@ -5,9 +5,9 @@
 </head>
 <body>
 <div th:replace="fragments/header :: header"/>
-<h1>HTTP Status 403 - Access is denied</h1>
+<h1 class="h3 mb-3 font-weight-normal">HTTP Status 403 - Access is denied</h1>
 <div th:if="${msg}">
-    <div th:text="${msg}"></div>
+    <div style="color: white" th:text="${msg}"></div>
 </div>
 <div th:replace="fragments/footer :: footer"/>
 </body>

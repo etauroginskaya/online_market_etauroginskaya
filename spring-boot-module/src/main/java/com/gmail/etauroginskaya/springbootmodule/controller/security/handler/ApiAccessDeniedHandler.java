@@ -22,9 +22,8 @@ public class ApiAccessDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException e) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
-            logger.warn(String.format("Api handler: %s attempted to access the protected URL: %s",
-                    auth.getName(),
-                    request.getRequestURI()));
+            logger.warn("Api handler: {} attempted to access the protected URL: {}",
+                    auth.getName(), request.getRequestURI());
         }
         response.sendRedirect(request.getContextPath() + ERROR_403_URL);
     }

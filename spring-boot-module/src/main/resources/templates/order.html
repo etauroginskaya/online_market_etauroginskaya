@@ -1,0 +1,76 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Order</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">Order details:</h1>
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <td>Number:</td>
+            <td><span th:text="${order.number}"/></td>
+        </tr>
+        <tr>
+            <td>Status:</td>
+            <td>
+                <div class="btn-group dropright">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false" th:text="${order.status}"/>
+                    <div class="dropdown-menu">
+                        <div th:each="status :
+                        ${T(com.gmail.etauroginskaya.online_market.repository.model.OrderStatusEnum).values()}">
+                            <form th:method="post"
+                                  th:action="@{/private/orders/{number}/update(number=${order.number},status=${status})}">
+                                <button th:if="${!order.status.equals(status)}" type="submit" name="action"
+                                        class="dropdown-item" th:text="${status}"/>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>Item name:</td>
+            <td>
+                <span th:text="${order.itemName}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Customer:</td>
+            <td>
+                <span th:text="${order.userName} +' '+ ${order.surname}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>
+                <span th:text="${order.email}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Telephone:</td>
+            <td>
+                <span th:text="${order.telephone}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Quantity items:</td>
+            <td>
+                <span th:text="${order.quantity}"/>
+            </td>
+        </tr>
+        <tr>
+            <td>Total price:</td>
+            <td>
+                <span th:text="${order.totalPrice}"/>
+            </td>
+        </tr>
+    </table>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

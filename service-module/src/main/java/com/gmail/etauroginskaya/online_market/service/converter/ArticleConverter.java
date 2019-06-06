@@ -8,4 +8,6 @@ public interface ArticleConverter {
     ArticleDTO toDTO(Article article);
 
     Article toEntity(ArticleDTO articleDTO);
+
+    ArticleDTO toDTOForAPI(Article article);
 }

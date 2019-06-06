@@ -24,8 +24,8 @@ public class AppUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final UserDTO user = userService.getUserByEmail(username);
         if (user == null) {
-            logger.info(String.format("User with email: \"%s\" doesn't exist", username));
-            throw new UsernameNotFoundException(String.format("User with email: \"%s\" doesn't exist", username));
+            logger.info("User with email: {} doesn't exist", username);
+            throw new UsernameNotFoundException(String.format("User with email: %s doesn't exist", username));
         }
         return new AppUserPrincipal(user);
     }

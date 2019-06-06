@@ -34,7 +34,7 @@ public class UserAPIControllerIntegrationTest {
     }
 
     @Test
-    public void shouldSaveSucceedWith200ForArticlesAPI() throws Exception {
+    public void shouldSaveSucceedWith200ForUsersAPI() throws Exception {
         mvc.perform(post(API_USER_URL)
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content("{\"id\": \"5\", " +

@@ -29,13 +29,4 @@ public class ProfileDTO {
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
-
-    @Override
-    public String toString() {
-        return "ProfileDTO{" +
-                "userId=" + userId +
-                ", address='" + address + '\'' +
-                ", telephone='" + telephone + '\'' +
-                '}';
-    }
 }

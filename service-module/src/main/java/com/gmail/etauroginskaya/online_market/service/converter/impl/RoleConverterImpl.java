@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RoleConverterImpl implements RoleConverter {
+
     @Override
     public RoleDTO toDTO(Role role) {
         RoleDTO roleDTO = new RoleDTO();
@@ -19,7 +20,7 @@ public class RoleConverterImpl implements RoleConverter {
     public Role fromDTO(RoleDTO roleDTO) {
         Role role = new Role();
         role.setId(roleDTO.getId());
-        if (!(roleDTO.getName() == null)) {
+        if (roleDTO.getName() != null) {
             role.setName(roleDTO.getName());
         }
         return role;

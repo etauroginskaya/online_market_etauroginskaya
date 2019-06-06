@@ -1,8 +1,6 @@
 package com.gmail.etauroginskaya.online_market.repository.impl;
 
 import com.gmail.etauroginskaya.online_market.repository.GenericRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,8 +9,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public class GenericRepositoryImpl<I, T> implements GenericRepository<I, T> {
-
-    private static Logger logger = LoggerFactory.getLogger(GenericRepositoryImpl.class);
 
     protected Class<T> entityClass;
 

@@ -79,10 +79,8 @@ public class ArticleControllerSecureIntegrationTest {
     @WithMockUser(authorities = {SALE_ROLE_NAME})
     @Test
     public void shouldSucceedForArticleUpdate() throws Exception {
-        mvc.perform(post(ARTICLE_UPDATE_URL, "1"))
-                .andDo(print())
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl(ARTICLE_URL));
+        mvc.perform(post(ARTICLE_UPDATE_URL, 1))
+                .andExpect(status().isOk());
     }
 
     @WithMockUser(authorities = {SALE_ROLE_NAME})

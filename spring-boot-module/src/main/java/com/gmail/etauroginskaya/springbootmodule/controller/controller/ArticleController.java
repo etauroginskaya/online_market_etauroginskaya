@@ -1,9 +1,9 @@
 package com.gmail.etauroginskaya.springbootmodule.controller.controller;
 
 import com.gmail.etauroginskaya.online_market.service.ArticleService;
-import com.gmail.etauroginskaya.online_market.service.CommentService;
 import com.gmail.etauroginskaya.online_market.service.model.AppUserPrincipal;
 import com.gmail.etauroginskaya.online_market.service.model.ArticleDTO;
+import com.gmail.etauroginskaya.online_market.service.model.CommentDTO;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -24,6 +24,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.gmail.etauroginskaya.online_market.service.constants.FormatConstants.DATE_FORMATTER;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.PageConstants.ARTICLES_PAGE;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.PageConstants.ARTICLE_NEW_PAGE;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.PageConstants.ARTICLE_PAGE;
@@ -34,26 +35,24 @@ import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlC
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ARTICLE_DELETE_URL;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ARTICLE_UPDATE_URL;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ARTICLE_URL;
-import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.COMMENT_DELETE_URL;
 import static java.util.Arrays.asList;
 
 @Controller
 @RequestMapping()
 public class ArticleController {
 
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(DATE_FORMATTER);
     private final ArticleService articleService;
-    private final CommentService commentService;
 
-    public ArticleController(ArticleService articleService, CommentService commentService) {
+    public ArticleController(ArticleService articleService) {
         this.articleService = articleService;
-        this.commentService = commentService;
     }
 
     @GetMapping(ARTICLES_URL)
     public String getViewArticles(Model model,
                                   @RequestParam(value = "page", defaultValue = "1") Integer currentPage,
                                   @RequestParam(value = "size", defaultValue = "10") Integer pageSize) {
-        Page<ArticleDTO> articlePage = articleService.getArticlePage(pageSize, currentPage - 1);
+        Page<ArticleDTO> articlePage = articleService.getArticlePage(pageSize, currentPage);
         model.addAttribute("articlePage", articlePage);
         if (articlePage.getTotalPages() > 0) {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, articlePage.getTotalPages())
@@ -70,6 +69,7 @@ public class ArticleController {
                              @PathVariable("id") Long id) {
         ArticleDTO articleDTO = articleService.getArticleById(id);
         model.addAttribute("article", articleDTO);
+        model.addAttribute("comment", new CommentDTO());
         return ARTICLE_PAGE;
     }
 
@@ -79,27 +79,27 @@ public class ArticleController {
         return "redirect:".concat(ARTICLES_URL).concat(DELETE_SUCCESSFULLY);
     }
 
-    @PostMapping(COMMENT_DELETE_URL)
-    public String deleteComment(@PathVariable("id") Long id) {
-        commentService.deleteCommentById(id);
-        return "redirect:".concat(ARTICLE_URL).concat(DELETE_SUCCESSFULLY);
-    }
-
     @PostMapping(ARTICLE_UPDATE_URL)
     public String updateArticle(@PathVariable("id") Long id,
                                 @Valid @ModelAttribute("article") ArticleDTO articleDTO,
-                                BindingResult bindingResult) {
+                                BindingResult bindingResult,
+                                Model model) {
         if (bindingResult.hasErrors()) {
+            ArticleDTO article = articleService.getArticleById(id);
+            articleDTO.setUser(article.getUser());
+            articleDTO.setComments(article.getComments());
+            articleDTO.setCreated(article.getCreated());
+            model.addAttribute("article", articleDTO);
             return ARTICLE_PAGE;
         }
         articleService.updateArticleTitleAndDescription(articleDTO);
         return "redirect:".concat(ARTICLE_URL);
     }
 
-    @GetMapping(ARTICLES_ADD_URL)
+    @GetMapping(value = {ARTICLES_ADD_URL})
     public String getNewArticleForm(Model model,
                                     @ModelAttribute(name = "article") ArticleDTO articleDTO) {
-        model.addAttribute("currentData", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        model.addAttribute("currentData", LocalDateTime.now().format(formatter));
         return ARTICLE_NEW_PAGE;
     }
 
@@ -109,7 +109,7 @@ public class ArticleController {
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
-            model.addAttribute("currentData", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            model.addAttribute("currentData", LocalDateTime.now().format(formatter));
             return ARTICLE_NEW_PAGE;
         }
         UserDTO userDTO = new UserDTO();

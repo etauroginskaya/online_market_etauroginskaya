@@ -29,6 +29,7 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.forwardedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -59,22 +60,6 @@ public class UserControllerTest {
     public void shouldGetAddUserViewWithSomeRoles() throws Exception {
         this.mockMvc.perform(get(USERS_ADD_URL))
                 .andExpect(status().isOk())
-                .andExpect(model().attribute("roles", equalTo(roleDTOS)));
-    }
-
-    @Test
-    public void shouldGetAddUserPageWithSomeRoles() throws Exception {
-        this.mockMvc.perform(post(USERS_ADD_URL))
-                .andExpect(status().isOk())
-                .andExpect(model().attribute("roles", equalTo(roleDTOS)));
-    }
-
-    @Test
-    public void shouldRedirectToFormAddUserWithSomeRolesAfterInvalidAdded() throws Exception {
-        when(bindingResult.hasErrors()).thenReturn(true);
-        this.mockMvc.perform(post(USERS_ADD_URL))
-                .andExpect(status().isOk())
-                .andExpect(forwardedUrl(USERS_ADD_PAGE))
                 .andExpect(model().attribute("roles", equalTo(roleDTOS)));
     }
 

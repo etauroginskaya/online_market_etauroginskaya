@@ -15,7 +15,6 @@ import java.util.Objects;
 @Entity
 @Table
 @SQLDelete(sql = "UPDATE item SET is_deleted = 1 WHERE id = ?")
-@Where(clause = "is_deleted = 0")
 public class Item {
 
     @Id
@@ -26,7 +25,7 @@ public class Item {
     private String name;
     @Column(nullable = false)
     private String description;
-    @Column(name = "unique_number", updatable = false, nullable = false)
+    @Column(name = "unique_number", updatable = false, nullable = false, unique = true)
     private String uniqueNumber;
     @Column(nullable = false)
     private BigDecimal price;

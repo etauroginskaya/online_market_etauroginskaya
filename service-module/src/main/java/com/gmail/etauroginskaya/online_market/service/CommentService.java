@@ -1,6 +1,10 @@
 package com.gmail.etauroginskaya.online_market.service;
 
+import com.gmail.etauroginskaya.online_market.service.model.CommentDTO;
+
 public interface CommentService {
 
-    void deleteCommentById(Long id);
+    long deleteCommentById(Long id);
+
+    void addComment(CommentDTO commentDTO);
 }

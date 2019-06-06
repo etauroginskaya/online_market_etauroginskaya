@@ -1,6 +1,6 @@
-package com.gmail.etauroginskaya.online_market.service.util;
+package com.gmail.etauroginskaya.online_market.service;
 
-public interface CoderUtil {
+public interface CoderService {
 
     String encode(String password);
 

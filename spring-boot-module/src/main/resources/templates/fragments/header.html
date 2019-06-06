@@ -2,9 +2,9 @@
       xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <div th:fragment="header-css">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-              crossorigin="anonymous">
+        <link th:href="@{/css/bootstrap.css}" rel="stylesheet"/>
+        <link th:href="@{/css/bootstrap-grid.css}" rel="stylesheet"/>
+        <link th:href="@{/css/bootstrap-reboot.css}" rel="stylesheet"/>
         <link th:href="@{/css/style.css}" rel="stylesheet"/>
     </div>
 </head>
@@ -35,7 +35,7 @@
                     </span>
                 </span>
                 <span sec:authorize="isAuthenticated()">
-                    <span sec:authorize="hasAuthority('Customer User')">
+                    <span sec:authorize="hasAnyAuthority({'Customer User', 'Sale User'})">
                         <a class="nav-item nav-link" th:href="@{/private/articles}">Articles</a>
                     </span>
                 </span>
@@ -46,17 +46,22 @@
                 </span>
                 <span sec:authorize="isAuthenticated()">
                     <span sec:authorize="hasAuthority('Sale User')">
-                        <a class="nav-item nav-link" th:href="@{/private/articles}">Articles</a>
-                    </span>
-                </span>
-                <span sec:authorize="isAuthenticated()">
-                    <span sec:authorize="hasAuthority('Sale User')">
                         <a class="nav-item nav-link" th:href="@{/private/articles/new}">New article</a>
                     </span>
                 </span>
                 <span sec:authorize="isAuthenticated()">
-                    <span sec:authorize="hasAuthority('Sale User')">
+                    <span sec:authorize="hasAnyAuthority({'Sale User', 'Customer User'})">
                         <a class="nav-item nav-link" th:href="@{/private/items}">Items</a>
+                    </span>
+                </span>
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAnyAuthority({'Sale User'},{'Customer User'})">
+                        <a class="nav-item nav-link" th:href="@{/private/orders}">Orders</a>
+                    </span>
+                </span>
+                <span sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Customer User')">
+                        <a class="nav-item nav-link" th:href="@{/private/reviews/new}">Create review</a>
                     </span>
                 </span>
             </div>

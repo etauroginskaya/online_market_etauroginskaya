@@ -3,19 +3,12 @@ package com.gmail.etauroginskaya.online_market.service.converter.impl;
 import com.gmail.etauroginskaya.online_market.repository.model.Review;
 import com.gmail.etauroginskaya.online_market.repository.model.User;
 import com.gmail.etauroginskaya.online_market.service.converter.ReviewConverter;
-import com.gmail.etauroginskaya.online_market.service.converter.UserConverter;
 import com.gmail.etauroginskaya.online_market.service.model.ReviewDTO;
 import com.gmail.etauroginskaya.online_market.service.model.UserDTO;
 import org.springframework.stereotype.Component;
 
 @Component
 public class ReviewConverterImpl implements ReviewConverter {
-
-    private final UserConverter userConverter;
-
-    public ReviewConverterImpl(UserConverter userConverter) {
-        this.userConverter = userConverter;
-    }
 
     @Override
     public ReviewDTO toDTO(Review review) {
@@ -35,12 +28,10 @@ public class ReviewConverterImpl implements ReviewConverter {
     @Override
     public Review fromDTO(ReviewDTO reviewDTO) {
         Review review = new Review();
-        review.setId(reviewDTO.getId());
         review.setDescription(reviewDTO.getDescription());
-        review.setCreated(reviewDTO.getCreated());
-        User user = userConverter.fromDTO(reviewDTO.getUser());
+        User user = new User();
+        user.setId(reviewDTO.getUser().getId());
         review.setUser(user);
-        review.setShow(review.isShow());
         return review;
     }
 }

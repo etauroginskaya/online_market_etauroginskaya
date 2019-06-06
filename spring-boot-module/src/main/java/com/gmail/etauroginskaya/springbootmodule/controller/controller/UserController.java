@@ -50,7 +50,7 @@ public class UserController {
     public String getViewUsers(Model model,
                                @RequestParam(value = "page", defaultValue = "1") Integer currentPage,
                                @RequestParam(value = "size", defaultValue = "10") Integer pageSize) {
-        Page<UserDTO> userPage = userService.getUsersPageByEmailAsc(pageSize, currentPage - 1);
+        Page<UserDTO> userPage = userService.getUsersPageByEmailAsc(pageSize, currentPage);
         model.addAttribute("userPage", userPage);
         int totalPages = userPage.getTotalPages();
         if (totalPages > 0) {

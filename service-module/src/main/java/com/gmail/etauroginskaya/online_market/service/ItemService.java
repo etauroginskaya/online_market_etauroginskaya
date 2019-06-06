@@ -11,9 +11,11 @@ public interface ItemService {
 
     ItemDTO getItemById(Long id);
 
-    void deleteItemById(Long id);
+    ItemDTO deleteItemById(Long id);
 
     void addItem(ItemDTO itemDTO);
 
     List<ItemDTO> getAllItems();
+
+    int addItems(List<ItemDTO> dtos);
 }
