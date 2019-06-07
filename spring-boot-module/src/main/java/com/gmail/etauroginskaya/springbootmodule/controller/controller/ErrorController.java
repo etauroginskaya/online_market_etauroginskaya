@@ -10,6 +10,7 @@ import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlC
 
 @Controller
 public class ErrorController {
+
     @GetMapping(ERROR_403_URL)
     public ModelAndView accesssDenied(Principal user) {
         ModelAndView model = new ModelAndView();

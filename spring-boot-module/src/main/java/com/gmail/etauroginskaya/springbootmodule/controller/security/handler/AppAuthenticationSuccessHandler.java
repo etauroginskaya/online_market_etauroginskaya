@@ -39,11 +39,10 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
                         Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
         if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
+            logger.debug("Response has already been committed. Unable to redirect to {}", targetUrl);
             return;
         }
-        logger.info(String.format("User: %s success authenticate and redirect to %s.",
-                authentication.getName(), targetUrl));
+        logger.info("User: {} success authenticate and redirect to {}.", authentication.getName(), targetUrl);
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
@@ -60,11 +59,9 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
                     return ORDERS_URL;
             }
         }
-        logger.error(String.format("No authentication success handler for user: %s",
-                authentication.getName()));
+        logger.error("No authentication success handler for user: {}", authentication.getName());
         throw new IllegalAuthenticationStateException
-                (String.format("No authentication success handler for user: %s",
-                        authentication.getName()));
+                (String.format("No authentication success handler for user: %s", authentication.getName()));
 
     }
 
