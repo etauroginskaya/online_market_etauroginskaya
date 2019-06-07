@@ -1,5 +1,6 @@
 package com.gmail.etauroginskaya.online_market.repository.model;
 
+<<<<<<< HEAD
 public class Review {
 
     private Long id;
@@ -7,6 +8,42 @@ public class Review {
     private String created;
     private boolean isShow;
     private User user;
+=======
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+import java.util.Objects;
+
+@Entity
+@Table
+@SQLDelete(sql = "UPDATE review SET deleted = 1 WHERE id = ?")
+@Where(clause = "deleted = 0")
+public class Review {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
+    private Long id;
+    @Column(updatable = false, nullable = false)
+    private String description;
+    @Column(updatable = false, nullable = false)
+    private String created;
+    @Column(name = "`show`", nullable = false)
+    private boolean isShow;
+    @ManyToOne
+    @JoinColumn(name = "user_id", updatable = false, nullable = false)
+    private User user;
+    @Column(name = "deleted", nullable = false)
+    private boolean isDeleted;
+>>>>>>> develop
 
     public Long getId() {
         return id;
@@ -47,4 +84,30 @@ public class Review {
     public void setUser(User user) {
         this.user = user;
     }
+<<<<<<< HEAD
+=======
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Review review = (Review) o;
+        return isShow == review.isShow &&
+                Objects.equals(id, review.id) &&
+                Objects.equals(description, review.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, description, isShow);
+    }
+>>>>>>> develop
 }

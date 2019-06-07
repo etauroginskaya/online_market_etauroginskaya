@@ -10,6 +10,21 @@
             </column>
             <column name="name" type="varchar(127)"/>
         </createTable>
+<<<<<<< HEAD
+=======
+        <insert tableName="role">
+            <column name="name" value="Administrator"/>
+        </insert>
+        <insert tableName="role">
+            <column name="name" value="Sale User"/>
+        </insert>
+        <insert tableName="role">
+            <column name="name" value="Customer User"/>
+        </insert>
+        <insert tableName="role">
+            <column name="name" value="Secure API User"/>
+        </insert>
+>>>>>>> develop
     </changeSet>
 
     <changeSet id="t_user_1" author="etauroginskaya">
@@ -19,15 +34,21 @@
             </column>
             <column name="surname" type="varchar(127)"/>
             <column name="name" type="varchar(127)"/>
+<<<<<<< HEAD
             <column name="patronymic" type="varchar(127)"/>
+=======
+>>>>>>> develop
             <column name="email" type="varchar(127)"/>
             <column name="password" type="varchar(127)"/>
             <column name="role_id" type="bigint"/>
             <column name="deleted" type="bit(1)"/>
         </createTable>
+<<<<<<< HEAD
     </changeSet>
 
     <changeSet id="t_user_2" author="etauroginskaya">
+=======
+>>>>>>> develop
         <addForeignKeyConstraint baseTableName="user" baseColumnNames="role_id" constraintName="fk_user_role"
                                  referencedTableName="role"
                                  referencedColumnNames="id"/>
@@ -44,14 +65,18 @@
             <column name="deleted" type="bit(1)"/>
             <column name="user_id" type="bigint"/>
         </createTable>
+<<<<<<< HEAD
     </changeSet>
 
     <changeSet id="t_review_2" author="etauroginskaya">
+=======
+>>>>>>> develop
         <addForeignKeyConstraint baseTableName="review" baseColumnNames="user_id" constraintName="fk_review_user"
                                  referencedTableName="user"
                                  referencedColumnNames="id"/>
     </changeSet>
 
+<<<<<<< HEAD
     <changeSet id="t_role_2" author="etauroginskaya">
         <insert tableName="role">
             <column name="name" value="Administrator"/>
@@ -73,11 +98,89 @@
     <changeSet id="t_role_5" author="etauroginskaya">
         <insert tableName="role">
             <column name="name" value="Secure API User"/>
+=======
+    <changeSet id="t_user_2" author="etauroginskaya">
+        <insert tableName="user">
+            <column name="id" valueNumeric="1"/>
+            <column name="surname" value="admin"/>
+            <column name="name" value="admin"/>
+            <column name="email" value="admin@gmail.com"/>
+            <column name="password" value="$2a$12$yJC/IQ2QYg/3FjNPoNiRfexcu3emdwhHBURzsMXL.GTs2i5tFkmZS"/>
+            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Administrator')"/>
+            <column name="deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="user">
+            <column name="surname" value="Customer"/>
+            <column name="name" value="User"/>
+            <column name="email" value="customer@gmail.com"/>
+            <column name="password" value="$2a$12$3BHNyNohwTSfGhdtgCf26OpF61o1UZN26tEvVcR64bT1vstdtdYkG"/>
+            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Customer User')"/>
+            <column name="deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_article_1" author="etauroginskaya">
+        <createTable tableName="article">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="varchar(255)"/>
+            <column name="title" type="varchar(255)"/>
+            <column name="description" type="text(1020)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="article" baseColumnNames="user_id" constraintName="fk_article_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_comment_1" author="etauroginskaya">
+        <createTable tableName="comment">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="created" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="user_id" type="bigint"/>
+            <column name="article_id" type="bigint"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="user_id"
+                                 constraintName="fk_comment_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="comment" baseColumnNames="article_id"
+                                 constraintName="fk_comment_article"
+                                 referencedTableName="article"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="t_profile_1" author="etauroginskaya">
+        <createTable tableName="profile">
+            <column name="user_id" type="bigint"/>
+            <column name="address" type="varchar(255)"/>
+            <column name="telephone" type="varchar(255)"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="profile" baseColumnNames="user_id"
+                                 constraintName="fk_profile_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <insert tableName="profile">
+            <column name="user_id" valueNumeric="1"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="profile">
+            <column name="user_id" valueNumeric="2"/>
+            <column name="is_deleted" valueNumeric="0"/>
+>>>>>>> develop
         </insert>
     </changeSet>
 
     <changeSet id="t_user_3" author="etauroginskaya">
         <insert tableName="user">
+<<<<<<< HEAD
             <column name="id" valueNumeric="1"/>
             <column name="surname" value="admin"/>
             <column name="name" value="admin"/>
@@ -87,6 +190,63 @@
             <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Administrator')"/>
             <column name="deleted" valueNumeric="0"/>
         </insert>
+=======
+            <column name="surname" value="Sale"/>
+            <column name="name" value="User"/>
+            <column name="email" value="sale@gmail.com"/>
+            <column name="password" value="$2a$12$Nl22eolrOU8Xy0aCoM9eE.ECwnHeVdiqB34.q/W/wYu9cBQRgVwEm"/>
+            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Sale User')"/>
+            <column name="deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="profile">
+            <column name="user_id" valueNumeric="3"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="user">
+            <column name="surname" value="Api"/>
+            <column name="name" value="User"/>
+            <column name="email" value="api@gmail.com"/>
+            <column name="password" value="$2a$12$yU0Iw5zTwBpMRCl4AYFKUOm/pvriezYta.6/UpmFq19geqha354dO"/>
+            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Secure API User')"/>
+            <column name="deleted" valueNumeric="0"/>
+        </insert>
+        <insert tableName="profile">
+            <column name="user_id" valueNumeric="4"/>
+            <column name="is_deleted" valueNumeric="0"/>
+        </insert>
+    </changeSet>
+
+    <changeSet id="t_item_1" author="etauroginskaya">
+        <createTable tableName="item">
+            <column autoIncrement="true" name="id" type="bigint">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(127)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="unique_number" type="varchar(63)"/>
+            <column name="price" type="varchar(63)"/>
+            <column name="is_deleted" type="bit(1)"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="t_order_1" author="etauroginskaya">
+        <createTable tableName="order">
+            <column name="unique_number" type="bigint"/>
+            <column name="user_id" type="bigint"/>
+            <column name="item_id" type="bigint"/>
+            <column name="status" type="varchar(63)"/>
+            <column name="created" type="varchar(63)"/>
+            <column name="quantity" type="bigint"/>
+        </createTable>
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="user_id"
+                                 constraintName="fk_order_user"
+                                 referencedTableName="user"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="order" baseColumnNames="item_id"
+                                 constraintName="fk_order_item"
+                                 referencedTableName="item"
+                                 referencedColumnNames="id"/>
+>>>>>>> develop
     </changeSet>
 
 </databaseChangeLog>

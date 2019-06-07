@@ -1,0 +1,15 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Error</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">Application has encountered an error. Please contact support on ...</h1>
+    <span th:text="${url}"/>
+    <span th:text="${exception}"/>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

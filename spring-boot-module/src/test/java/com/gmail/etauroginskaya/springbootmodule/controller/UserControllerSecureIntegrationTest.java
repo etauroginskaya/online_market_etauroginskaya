@@ -11,7 +11,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
+<<<<<<< HEAD
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.DELETE_USERS_NOT_SUCCESSFULLY;
+=======
+import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.DELETE_NOT_SUCCESSFULLY;
+>>>>>>> develop
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.UPDATE_USER_UNAVAILABLE;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.ADMIN_ROLE_NAME;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.*;
@@ -75,6 +79,10 @@ public class UserControllerSecureIntegrationTest {
         mvc.perform(post(USERS_DELETE_URL)
                 .param("listID", "1"))
                 .andExpect(status().is3xxRedirection())
+<<<<<<< HEAD
                 .andExpect(redirectedUrl(USERS_URL + DELETE_USERS_NOT_SUCCESSFULLY));
+=======
+                .andExpect(redirectedUrl(USERS_URL + DELETE_NOT_SUCCESSFULLY));
+>>>>>>> develop
     }
 }

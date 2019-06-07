@@ -1,0 +1,28 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create review</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <form th:action="@{/private/reviews/new}" th:object="${review}" method="post" style="color: white">
+        <h1 class="h3 mb-3 font-weight-normal">
+            Please enter description your review:
+        </h1>
+
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('description')}"
+             th:errors="*{description}">
+            Description Error
+        </div>
+        <div class="input-group mb-3">
+            <textarea rows="10" class="form-control" aria-label="With textarea" th:field="*{description}"/>
+        </div>
+
+        <input type="submit" class="btn btn-success btn-block" value="Create review"/>
+    </form>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

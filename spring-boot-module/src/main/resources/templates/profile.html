@@ -1,0 +1,105 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Profile</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <div th:if="${param.invalid_password}">
+        <div class="alert alert-danger text-center">
+            Invalid current password entered!
+        </div>
+    </div>
+    <div th:if="${param.enter_password}">
+        <div class="alert alert-danger text-center">
+            Current password is not entered!
+        </div>
+    </div>
+    <div th:if="${param.not_equal_password}">
+        <div class="alert alert-danger text-center">
+            New password does not match the repeat value!
+        </div>
+    </div>
+    <div th:if="${param.updated}">
+        <div class="alert alert-success text-center">
+            User successfully updated.
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <form th:action="@{/private/profile(newPassword=${model},repeatPassword=${model})}"
+              th:object="${user}" method="post" style="color: white">
+            <h1 class="h3 mb-3 font-weight-normal">Please correct your profile: </h1>
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}">
+                Surname Error
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="surname">Surname</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" name="surname"
+                       th:value="${user.surname}">
+            </div>
+
+            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">
+                Name Error
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="name">Name</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" name="name"
+                       th:value="${user.name}">
+            </div>
+            <input hidden type="text" name="email" th:value="${user.email}">
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="address">Address</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" name="profileDTO.address"
+                       th:value="${user.profileDTO.address}">
+            </div>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="telephone">Telephone</span>
+                </div>
+                <input type="text" class="form-control" aria-describedby="basic-addon1" name="profileDTO.telephone"
+                       th:value="${user.profileDTO.telephone}">
+            </div>
+
+            <h1 class="h3 mb-3 font-weight-normal">Please enter new password: </h1>
+
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="newPassword">New password</span>
+                </div>
+                <input type="password" class="form-control" aria-describedby="basic-addon1" name="newPassword">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="repeatPassword">Repeat</span>
+                </div>
+                <input type="password" class="form-control" aria-describedby="basic-addon1" name="repeatPassword">
+            </div>
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="currentPassword">Current password</span>
+                </div>
+                <input type="password" class="form-control" aria-describedby="basic-addon1" name="password">
+            </div>
+
+            <input type="checkbox" name="random" th:value="'true'">
+            <b style="color: white">Create random password</b>
+
+            <div class="col-xs-6 col-sm-6 col-md-6">
+                <input type="submit" class="btn btn-lg btn-success btn-block" value="Update"/>
+            </div>
+        </form>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

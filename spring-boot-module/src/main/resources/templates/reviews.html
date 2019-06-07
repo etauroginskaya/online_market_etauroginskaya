@@ -47,7 +47,11 @@
         <tbody>
         <tr th:each="review, stat : ${reviewPage}">
             <td><span th:text="${stat.index + 1}"/></td>
+<<<<<<< HEAD
             <td><span th:text="${review.user.surname} +' '+ ${review.user.name} +' '+ ${review.user.patronymic}"/></td>
+=======
+            <td><span th:text="${review.user.surname} +' '+ ${review.user.name}"/></td>
+>>>>>>> develop
             <td><span th:text="${review.description}"/></td>
             <td><span th:text="${review.created}"/></td>
             <div sec:authorize="isAuthenticated()">
@@ -72,7 +76,11 @@
     </table>
 
     <nav aria-label="Page navigation example">
+<<<<<<< HEAD
          <ul th:if="${reviewPage.totalPages > 0}" class="pagination justify-content-center">
+=======
+         <ul th:if="${reviewPage.totalPages > 1}" class="pagination justify-content-center">
+>>>>>>> develop
             <li class="page-item" th:each="pageNumber : ${pageNumbers}">
                 <a class="page-link" th:href="@{/reviews(size=${reviewPage.size}, page=${pageNumber})}"
                    th:text="${pageNumber}"

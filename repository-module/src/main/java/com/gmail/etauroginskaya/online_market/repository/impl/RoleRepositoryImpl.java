@@ -2,6 +2,7 @@ package com.gmail.etauroginskaya.online_market.repository.impl;
 
 import com.gmail.etauroginskaya.online_market.repository.RoleRepository;
 import com.gmail.etauroginskaya.online_market.repository.model.Role;
+<<<<<<< HEAD
 import com.gmail.etauroginskaya.online_market.repository.exception.DatabaseQueryException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,4 +44,10 @@ public class RoleRepositoryImpl extends ConnectionRepositoryImpl implements Role
         role.setName(rs.getString("name"));
         return role;
     }
+=======
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class RoleRepositoryImpl extends GenericRepositoryImpl<Long, Role> implements RoleRepository {
+>>>>>>> develop
 }

@@ -1,8 +1,27 @@
 package com.gmail.etauroginskaya.online_market.repository.model;
 
+<<<<<<< HEAD
 public class Role {
 
     private Long id;
+=======
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table
+public class Role {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
+    private Long id;
+    @Column(updatable = false, nullable = false)
+>>>>>>> develop
     private String name;
 
     public Long getId() {

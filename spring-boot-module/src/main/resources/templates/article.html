@@ -1,0 +1,126 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Article</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">Article details:</h1>
+    <div th:if="${param.deleted}">
+        <div class="alert alert-success text-center">
+            Comment deleted.
+        </div>
+    </div>
+    <div th:if="${param.added}">
+        <div class="alert alert-success text-center">
+            Comment added.
+        </div>
+    </div>
+    <form th:action="@{/private/articles/{id}/update(id=${article.id})}" th:object="${article}" method="post">
+        <table class="table table-hover table-dark">
+            <thead>
+            <tr>
+                <td>Date:</td>
+                <td><span th:text="${article.created}"/></td>
+            </tr>
+            <tr>
+                <td>Title:</td>
+                <td>
+                    <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+                        <input type="text" class="form-control" aria-describedby="basic-addon1"
+                               maxlength="200" name="title" th:value="${article.title}"/>
+                    </span>
+                        <span sec:authorize="hasAuthority('Customer User')">
+                            <span th:text="${article.title}"/>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            <div th:if="${#fields.hasErrors('title')}">
+                <div class="alert alert-danger text-center" th:errors="${article.title}">Title Error</div>
+            </div>
+            <tr>
+                <td>Author:</td>
+                <td><span th:text="${article.user.surname} +' '+ ${article.user.name}"/></td>
+            </tr>
+            <tr>
+                <td>Description:</td>
+                <td>
+                    <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+                    <input type="text" class="form-control" aria-describedby="basic-addon1"
+                           maxlength="1000" name="description" th:value="${article.description}"/>
+                    </span>
+                        <span sec:authorize="hasAuthority('Customer User')">
+                            <span th:text="${article.description}"/>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            <div th:if="${#fields.hasErrors('description')}">
+                <div class="alert alert-danger text-center" th:errors="${article.description}">Description Error</div>
+            </div>
+        </table>
+        <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+                            <input type="submit" class="btn btn-success btn-block" value="Update article"/>
+                    </span></div>
+    </form>
+    <th:block th:if="${article.comments.isEmpty()}">
+        <h1 class="h3 mb-3 font-weight-normal">No comments...</h1>
+    </th:block>
+    <th:block th:if="${!article.comments.isEmpty()}">
+        <h1 class="h3 mb-3 font-weight-normal">Comments:</h1>
+        <table class="table table-hover table-dark">
+            <thead>
+            <tr>
+                <th scope="row"></th>
+                <th scope="col">Author</th>
+                <th scope="col">Date of create</th>
+                <th scope="col">Description</th>
+                <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+            <th scope="col"></th>
+                    </span></div>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="comment, stat : ${article.comments}">
+                <td><span th:text="${stat.index + 1}"/></td>
+                <td><span th:text="${comment.userDTO.name}+' '+${comment.userDTO.surname}"/></td>
+                <td><span th:text="${comment.created}"/></td>
+                <td><span th:text="${comment.description}"/></td>
+                <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+            <form action="#" th:action="@{/private/comment/delete/{id}(id=${comment.id})}" method="post">
+                <td><input type="submit" class="btn btn-danger btn-block" value="Delete"/></td>
+            </form>
+                    </span>
+                </div>
+            </tr>
+            </tbody>
+        </table>
+    </th:block>
+    <div class="mb-3"/>
+    <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Customer User')">
+            <form action="#" th:action="@{/private/comment/new}" th:object="${comment}" method="post">
+            <input hidden name="articleID" th:value="${article.id}">
+        <div class="input-group mb-3">
+            <textarea rows="3" maxlength="1000" placeholder="Enter your comment" class="form-control"
+                      aria-label="With textarea" th:field="*{description}" required/>
+        </div>
+                <div class="col-xs-3 col-sm-3 col-md-3">
+                <input type="submit" class="btn btn-success btn-block" value="Add new comment"/>
+                </div>
+            </form>
+                    </span>
+    </div>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

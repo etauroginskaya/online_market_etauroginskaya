@@ -22,6 +22,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+<<<<<<< HEAD
         final UserDTO user = userService.findUserByEmail(username);
         if (user == null) {
             logger.info(String.format("User with email: \"%s\" doesn't exist", username));
@@ -30,3 +31,13 @@ public class AppUserDetailsService implements UserDetailsService {
         return new AppUserPrincipal(user);
     }
 }
+=======
+        final UserDTO user = userService.getUserByEmail(username);
+        if (user == null) {
+            logger.info("User with email: {} doesn't exist", username);
+            throw new UsernameNotFoundException(String.format("User with email: %s doesn't exist", username));
+        }
+        return new AppUserPrincipal(user);
+    }
+}
+>>>>>>> develop

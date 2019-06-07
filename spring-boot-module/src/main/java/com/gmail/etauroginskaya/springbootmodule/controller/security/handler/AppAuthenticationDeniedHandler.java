@@ -22,9 +22,13 @@ public class AppAuthenticationDeniedHandler implements AccessDeniedHandler {
                        AccessDeniedException e) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null) {
+<<<<<<< HEAD
             logger.warn(String.format("%s was trying to access protected URL: %s",
                     auth.getName(),
                     request.getRequestURI()));
+=======
+            logger.warn("{} was trying to access protected URL: {}", auth.getName(), request.getRequestURI());
+>>>>>>> develop
         }
         response.sendRedirect(request.getContextPath() + ERROR_403_URL);
     }

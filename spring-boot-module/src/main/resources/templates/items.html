@@ -1,0 +1,94 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <title>Items</title>
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+<div th:replace="fragments/header :: header"/>
+<div class="container">
+    <h1 class="h3 mb-3 font-weight-normal">Items list:</h1>
+    <div th:if="${param.deleted}">
+        <div class="alert alert-success text-center">
+            Item deleted.
+        </div>
+    </div>
+    <div th:if="${param.added}">
+        <div class="alert alert-success text-center">
+            Item created.
+        </div>
+    </div>
+    <div th:if="${param.review_added}">
+        <div class="alert alert-success text-center">
+            Review successfully created!
+        </div>
+    </div>
+    <div th:if="${param.not_valid_order}">
+        <div class="alert alert-danger text-center">
+            Quantity of items in order must be at least 1!
+        </div>
+    </div>
+    <table class="table table-hover table-dark">
+        <thead>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Unique number</th>
+            <th scope="col">Price</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${itemPage}">
+            <td><span th:text="${item.name}"/></td>
+            <td><span th:text="${item.uniqueNumber}"/></td>
+            <td><span th:text="${item.price}"/></td>
+            <td><a th:href="@{/private/items/{id}(id=${item.id})}">show detail ...</a></td>
+            <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Sale User')">
+            <form action="#" th:action="@{/private/items/{id}/delete(id=${item.id})}" method="post">
+                <td><input type="submit" class="btn btn-danger btn-block" value="Delete"/></td>
+            </form>
+            <form action="#" th:action="@{/private/items/{id}/copy(id=${item.id})}" method="post">
+                <td><input type="submit" class="btn btn-light btn-block" value="Copy"/></td>
+            </form>
+                    </span>
+            </div>
+            <div sec:authorize="isAuthenticated()">
+                    <span sec:authorize="hasAuthority('Customer User')">
+            <form th:action="@{/private/orders/new(itemID=${item.id},quantity=${model})}" method="post">
+            <td><input required type="number" class="form-control" aria-describedby="basic-addon1" min="0" max="100"
+                       name="quantity"/></td>
+            <td><input type="submit" class="btn btn-success btn-block" value="Order"/></td>
+            </form>
+                    </span>
+            </div>
+        </tr>
+        </tbody>
+    </table>
+    <div sec:authorize="isAuthenticated()">
+        <span sec:authorize="hasAuthority('Sale User')">
+                <span style="color: white">Upload items from XML:</span>
+                <form action="#" th:action="@{/private/items/upload}" method="get">
+                    <div class="col-xs-6 col-sm-6 col-md-6">
+                    <input type="submit" class="btn btn-light btn-block" value="Upload items from file"/>
+                    </div>
+                </form>
+        </span>
+    </div>
+
+    <nav aria-label="Page navigation example">
+        <ul th:if="${itemPage.totalPages > 1}" class="pagination justify-content-center">
+            <li class="page-item" th:each="pageNumber : ${pageNumbers}">
+                <a class="page-link" th:href="@{/private/items(size=${itemPage.size}, page=${pageNumber})}"
+                   th:text="${pageNumber}"
+                   th:class="${pageNumber==itemPage.number + 1} ? active"></a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

@@ -45,6 +45,7 @@ public class ReviewControllerSecureIntegrationTest {
 
     @WithMockUser(authorities = {ADMIN_ROLE_NAME})
     @Test
+<<<<<<< HEAD
     public void shouldSucceedForReviewUpdate() throws Exception {
         mvc.perform(post(REVIEWS_UPDATE_URL, "1"))
                 .andExpect(status().is3xxRedirection())
@@ -57,5 +58,11 @@ public class ReviewControllerSecureIntegrationTest {
         mvc.perform(post(REVIEWS_DELETE_URL, "1"))
                 .andExpect(status().is3xxRedirection())
                 .andExpect(redirectedUrl(REVIEWS_URL.concat(DELETE_REVIEW_SUCCESSFULLY)));
+=======
+    public void shouldSucceedForReviewDelete() throws Exception {
+        mvc.perform(post(REVIEWS_DELETE_URL, "1"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl(REVIEWS_URL.concat(DELETE_SUCCESSFULLY)));
+>>>>>>> develop
     }
 }
