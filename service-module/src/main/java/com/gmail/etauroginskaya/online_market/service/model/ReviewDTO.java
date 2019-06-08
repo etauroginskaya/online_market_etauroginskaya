@@ -1,17 +1,11 @@
 package com.gmail.etauroginskaya.online_market.service.model;
 
-<<<<<<< HEAD
-public class ReviewDTO {
-
-    private Long id;
-=======
 import javax.validation.constraints.NotBlank;
 
 public class ReviewDTO {
 
     private Long id;
     @NotBlank
->>>>>>> develop
     private String description;
     private String created;
     private Boolean show;

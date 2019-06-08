@@ -51,11 +51,8 @@ public class AppUserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-<<<<<<< HEAD
-=======
 
     public Long getId() {
         return user.getId();
     }
->>>>>>> develop
 }

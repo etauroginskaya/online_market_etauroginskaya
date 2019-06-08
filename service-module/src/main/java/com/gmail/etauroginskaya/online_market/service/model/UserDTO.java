@@ -1,10 +1,7 @@
 package com.gmail.etauroginskaya.online_market.service.model;
 
-<<<<<<< HEAD
-=======
 import com.gmail.etauroginskaya.online_market.service.validator.annotations.UniqueEmail;
 
->>>>>>> develop
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
@@ -12,50 +9,36 @@ import javax.validation.constraints.Size;
 
 public class UserDTO {
 
+    public interface New {
+    }
+
+    public interface Update {
+    }
+
     private Long id;
 
-    @NotBlank
-    @Size(max = 40)
-<<<<<<< HEAD
-    @Pattern(regexp = "[A-Za-z]+", message = "Only Latin characters must be used!")
-=======
-    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!")
->>>>>>> develop
+    @NotBlank(groups = {New.class, Update.class})
+    @Size(max = 40, groups = {New.class, Update.class})
+    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!", groups = {New.class, Update.class})
     private String surname;
 
-    @NotBlank
-    @Size(max = 20)
-<<<<<<< HEAD
-    @Pattern(regexp = "[A-Za-z]+", message = "Only Latin characters must be used!")
+    @NotBlank(groups = {New.class, Update.class})
+    @Size(max = 20, groups = {New.class, Update.class})
+    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!", groups = {New.class, Update.class})
     private String name;
 
-    @Size(max = 40)
-    @Pattern(regexp = "[A-Za-z]+", message = "Only Latin characters must be used!")
-    private String patronymic;
-
-    @NotBlank
-    @Size(max = 50)
-    @Email
-=======
-    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!")
-    private String name;
-
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    @UniqueEmail
->>>>>>> develop
+    @NotBlank(groups = {New.class})
+    @Size(max = 50, groups = {New.class})
+    @Email(groups = {New.class})
+    @UniqueEmail(groups = {New.class})
     private String email;
 
     private String password;
 
     private RoleDTO role;
 
-<<<<<<< HEAD
-=======
     private ProfileDTO profileDTO;
 
->>>>>>> develop
     public Long getId() {
         return id;
     }
@@ -80,17 +63,6 @@ public class UserDTO {
         this.name = name;
     }
 
-<<<<<<< HEAD
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-=======
->>>>>>> develop
     public String getEmail() {
         return email;
     }
@@ -114,8 +86,6 @@ public class UserDTO {
     public void setRole(RoleDTO role) {
         this.role = role;
     }
-<<<<<<< HEAD
-=======
 
     public ProfileDTO getProfileDTO() {
         return profileDTO;
@@ -124,5 +94,4 @@ public class UserDTO {
     public void setProfileDTO(ProfileDTO profileDTO) {
         this.profileDTO = profileDTO;
     }
->>>>>>> develop
 }

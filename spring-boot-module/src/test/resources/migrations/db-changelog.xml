@@ -110,8 +110,6 @@
         </insert>
     </changeSet>
 
-<<<<<<< HEAD
-=======
     <changeSet id="t_article_1" author="etauroginskaya">
         <createTable tableName="article">
             <column autoIncrement="true" name="id" type="bigint">
@@ -279,5 +277,4 @@
         </insert>
     </changeSet>
 
->>>>>>> develop
 </databaseChangeLog>

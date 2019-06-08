@@ -7,17 +7,12 @@ public class UrlConstants {
     public static final String USERS_ADD_URL = "/private/users/add";
     public static final String USERS_DELETE_URL = "/private/users/delete";
     public static final String ERROR_403_URL = "/error/403";
-<<<<<<< HEAD
-=======
     public static final String ERROR_URL = "/error";
->>>>>>> develop
     public static final String LOGIN_URL = "/login";
     public static final String HOME_URL = "/";
     public static final String REVIEWS_URL = "/reviews";
     public static final String REVIEWS_UPDATE_URL = "/private/reviews/update/{id}";
     public static final String REVIEWS_DELETE_URL = "/private/reviews/delete/{id}";
-<<<<<<< HEAD
-=======
     public static final String REVIEW_ADD_URL = "/private/reviews/new";
     public static final String API_ARTICLES_URL = "/api/articles";
     public static final String API_ARTICLE_URL = "/api/articles/{id}";
@@ -44,5 +39,4 @@ public class UrlConstants {
     public static final String ORDER_URL = "/private/orders/{number}";
     public static final String ORDER_ADD_URL = "/private/orders/new";
     public static final String ORDER_UPDATE_URL = "/private/orders/{number}/update";
->>>>>>> develop
 }

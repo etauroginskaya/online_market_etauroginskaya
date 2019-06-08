@@ -1,10 +1,5 @@
 package com.gmail.etauroginskaya.online_market.repository.model;
 
-<<<<<<< HEAD
-public class Role {
-
-    private Long id;
-=======
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -21,7 +16,6 @@ public class Role {
     @Column(updatable = false, nullable = false)
     private Long id;
     @Column(updatable = false, nullable = false)
->>>>>>> develop
     private String name;
 
     public Long getId() {

@@ -1,14 +1,5 @@
 package com.gmail.etauroginskaya.online_market.repository.model;
 
-<<<<<<< HEAD
-public class Review {
-
-    private Long id;
-    private String description;
-    private String created;
-    private boolean isShow;
-    private User user;
-=======
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -43,7 +34,6 @@ public class Review {
     private User user;
     @Column(name = "deleted", nullable = false)
     private boolean isDeleted;
->>>>>>> develop
 
     public Long getId() {
         return id;
@@ -84,8 +74,6 @@ public class Review {
     public void setUser(User user) {
         this.user = user;
     }
-<<<<<<< HEAD
-=======
 
     public boolean isDeleted() {
         return isDeleted;
@@ -109,5 +97,4 @@ public class Review {
     public int hashCode() {
         return Objects.hash(id, description, isShow);
     }
->>>>>>> develop
 }

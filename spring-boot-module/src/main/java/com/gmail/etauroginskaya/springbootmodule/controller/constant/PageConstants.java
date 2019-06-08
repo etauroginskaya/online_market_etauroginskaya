@@ -3,10 +3,6 @@ package com.gmail.etauroginskaya.springbootmodule.controller.constant;
 public class PageConstants {
 
     public static final String REVIEWS_PAGE = "reviews";
-<<<<<<< HEAD
-    public static final String USERS_PAGE = "users";
-    public static final String USERS_ADD_PAGE = "user_add";
-=======
     public static final String REVIEW_ADD_PAGE = "new_review";
     public static final String USERS_PAGE = "users";
     public static final String USERS_ADD_PAGE = "user_add";
@@ -21,5 +17,4 @@ public class PageConstants {
     public static final String ORDERS_PAGE = "orders";
     public static final String ORDER_PAGE = "order";
     public static final String ERROR_PAGE = "error";
->>>>>>> develop
 }

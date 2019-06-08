@@ -17,13 +17,10 @@ import java.io.IOException;
 import java.util.Collection;
 
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.ADMIN_ROLE_NAME;
-<<<<<<< HEAD
-=======
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.CUSTOMER_ROLE_NAME;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.RoleConstants.SALE_ROLE_NAME;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ITEMS_URL;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.ORDERS_URL;
->>>>>>> develop
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.UrlConstants.USERS_URL;
 
 public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHandler {
@@ -39,16 +36,6 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
     }
 
     private void handle(HttpServletRequest request, HttpServletResponse response,
-<<<<<<< HEAD
-                          Authentication authentication) throws IOException {
-        String targetUrl = determineTargetUrl(authentication);
-        if (response.isCommitted()) {
-            logger.debug("Response has already been committed. Unable to redirect to " + targetUrl);
-            return;
-        }
-        logger.info(String.format("User: %s success authenticate and redirect to %s.",
-                authentication.getName(), targetUrl));
-=======
                         Authentication authentication) throws IOException {
         String targetUrl = determineTargetUrl(authentication);
         if (response.isCommitted()) {
@@ -56,7 +43,6 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
             return;
         }
         logger.info("User: {} success authenticate and redirect to {}.", authentication.getName(), targetUrl);
->>>>>>> develop
         redirectStrategy.sendRedirect(request, response, targetUrl);
     }
 
@@ -67,15 +53,6 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
             switch (grantedAuthority.getAuthority()) {
                 case ADMIN_ROLE_NAME:
                     return USERS_URL;
-<<<<<<< HEAD
-            }
-        }
-        logger.warn(String.format("No authentication success handler for user: %s",
-                authentication.getName()));
-        throw new IllegalAuthenticationStateException
-                (String.format("No authentication success handler for user: %s",
-                        authentication.getName()));
-=======
                 case CUSTOMER_ROLE_NAME:
                     return ITEMS_URL;
                 case SALE_ROLE_NAME:
@@ -85,8 +62,6 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
         logger.error("No authentication success handler for user: {}", authentication.getName());
         throw new IllegalAuthenticationStateException
                 (String.format("No authentication success handler for user: %s", authentication.getName()));
->>>>>>> develop
-
     }
 
     private void clearAuthenticationAttributes(HttpServletRequest request) {

@@ -15,10 +15,6 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-<<<<<<< HEAD
-        <liquibase.version>3.6.3</liquibase.version>
-=======
->>>>>>> develop
     </properties>
 
     <dependencies>
@@ -33,11 +29,7 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-<<<<<<< HEAD
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-=======
             <artifactId>spring-boot-starter-data-jpa</artifactId>
->>>>>>> develop
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -46,10 +38,6 @@
         <dependency>
             <groupId>org.liquibase</groupId>
             <artifactId>liquibase-core</artifactId>
-<<<<<<< HEAD
-            <version>${liquibase.version}</version>
-=======
->>>>>>> develop
         </dependency>
     </dependencies>
 

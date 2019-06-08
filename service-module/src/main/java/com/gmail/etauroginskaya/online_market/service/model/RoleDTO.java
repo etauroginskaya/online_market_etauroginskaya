@@ -24,15 +24,4 @@ public class RoleDTO {
     public void setName(String name) {
         this.name = name;
     }
-<<<<<<< HEAD
-
-    @Override
-    public String toString() {
-        return "RoleDTO{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
-=======
->>>>>>> develop
 }

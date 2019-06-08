@@ -10,8 +10,6 @@
             </column>
             <column name="name" type="varchar(127)"/>
         </createTable>
-<<<<<<< HEAD
-=======
         <insert tableName="role">
             <column name="name" value="Administrator"/>
         </insert>
@@ -24,7 +22,6 @@
         <insert tableName="role">
             <column name="name" value="Secure API User"/>
         </insert>
->>>>>>> develop
     </changeSet>
 
     <changeSet id="t_user_1" author="etauroginskaya">
@@ -34,21 +31,11 @@
             </column>
             <column name="surname" type="varchar(127)"/>
             <column name="name" type="varchar(127)"/>
-<<<<<<< HEAD
-            <column name="patronymic" type="varchar(127)"/>
-=======
->>>>>>> develop
             <column name="email" type="varchar(127)"/>
             <column name="password" type="varchar(127)"/>
             <column name="role_id" type="bigint"/>
             <column name="deleted" type="bit(1)"/>
         </createTable>
-<<<<<<< HEAD
-    </changeSet>
-
-    <changeSet id="t_user_2" author="etauroginskaya">
-=======
->>>>>>> develop
         <addForeignKeyConstraint baseTableName="user" baseColumnNames="role_id" constraintName="fk_user_role"
                                  referencedTableName="role"
                                  referencedColumnNames="id"/>
@@ -65,40 +52,11 @@
             <column name="deleted" type="bit(1)"/>
             <column name="user_id" type="bigint"/>
         </createTable>
-<<<<<<< HEAD
-    </changeSet>
-
-    <changeSet id="t_review_2" author="etauroginskaya">
-=======
->>>>>>> develop
         <addForeignKeyConstraint baseTableName="review" baseColumnNames="user_id" constraintName="fk_review_user"
                                  referencedTableName="user"
                                  referencedColumnNames="id"/>
     </changeSet>
 
-<<<<<<< HEAD
-    <changeSet id="t_role_2" author="etauroginskaya">
-        <insert tableName="role">
-            <column name="name" value="Administrator"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="t_role_3" author="etauroginskaya">
-        <insert tableName="role">
-            <column name="name" value="Sale User"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="t_role_4" author="etauroginskaya">
-        <insert tableName="role">
-            <column name="name" value="Customer User"/>
-        </insert>
-    </changeSet>
-
-    <changeSet id="t_role_5" author="etauroginskaya">
-        <insert tableName="role">
-            <column name="name" value="Secure API User"/>
-=======
     <changeSet id="t_user_2" author="etauroginskaya">
         <insert tableName="user">
             <column name="id" valueNumeric="1"/>
@@ -174,23 +132,11 @@
         <insert tableName="profile">
             <column name="user_id" valueNumeric="2"/>
             <column name="is_deleted" valueNumeric="0"/>
->>>>>>> develop
         </insert>
     </changeSet>
 
     <changeSet id="t_user_3" author="etauroginskaya">
         <insert tableName="user">
-<<<<<<< HEAD
-            <column name="id" valueNumeric="1"/>
-            <column name="surname" value="admin"/>
-            <column name="name" value="admin"/>
-            <column name="patronymic" value=""/>
-            <column name="email" value="admin@gmail.com"/>
-            <column name="password" value="$2a$12$AH6AfXV1K4hv17jSK/.2Ge2SbwoPNjx4Oz1zy3DSZCQ37YimufMeO"/>
-            <column name="role_id" valueComputed="(SELECT id FROM role WHERE name = 'Administrator')"/>
-            <column name="deleted" valueNumeric="0"/>
-        </insert>
-=======
             <column name="surname" value="Sale"/>
             <column name="name" value="User"/>
             <column name="email" value="sale@gmail.com"/>
@@ -246,7 +192,6 @@
                                  constraintName="fk_order_item"
                                  referencedTableName="item"
                                  referencedColumnNames="id"/>
->>>>>>> develop
     </changeSet>
 
 </databaseChangeLog>

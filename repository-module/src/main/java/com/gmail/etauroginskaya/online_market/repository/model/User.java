@@ -1,18 +1,6 @@
 package com.gmail.etauroginskaya.online_market.repository.model;
 
-<<<<<<< HEAD
-public class User {
-
-    private Long id;
-    private String surname;
-    private String name;
-    private String patronymic;
-    private String email;
-    private String password;
-    private Role role;
-=======
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,7 +39,6 @@ public class User {
     private Profile profile;
     @Column(name = "deleted", nullable = false)
     private boolean isDeleted;
->>>>>>> develop
 
     public Long getId() {
         return id;
@@ -77,17 +64,6 @@ public class User {
         this.name = name;
     }
 
-<<<<<<< HEAD
-    public String getPatronymic() {
-        return patronymic;
-    }
-
-    public void setPatronymic(String patronymic) {
-        this.patronymic = patronymic;
-    }
-
-=======
->>>>>>> develop
     public String getEmail() {
         return email;
     }
@@ -111,8 +87,6 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
-<<<<<<< HEAD
-=======
 
     public Profile getProfile() {
         return profile;
@@ -146,5 +120,4 @@ public class User {
     public int hashCode() {
         return Objects.hash(id, surname, name, email, role);
     }
->>>>>>> develop
 }
