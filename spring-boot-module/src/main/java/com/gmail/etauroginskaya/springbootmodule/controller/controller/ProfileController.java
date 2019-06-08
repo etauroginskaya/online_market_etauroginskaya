@@ -8,13 +8,12 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import javax.validation.Valid;
 
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.PageConstants.PROFILE_PAGE;
 import static com.gmail.etauroginskaya.springbootmodule.controller.constant.ParameterConstants.UPDATE_SUCCESSFULLY;
@@ -45,11 +44,11 @@ public class ProfileController {
 
     @PostMapping(PROFILE_URL)
     public String updateProfile(@AuthenticationPrincipal AppUserPrincipal userPrincipal,
-                                @Valid @ModelAttribute(name = "user") UserDTO userDTO,
+                                @Validated(UserDTO.Update.class) @ModelAttribute(name = "user") UserDTO userDTO,
+                                BindingResult bindingResult,
                                 @RequestParam(value = "newPassword", defaultValue = "") String newPassword,
                                 @RequestParam(value = "repeatPassword", defaultValue = "") String repeatPassword,
-                                @RequestParam(value = "random", defaultValue = "false") Boolean random,
-                                BindingResult bindingResult) {
+                                @RequestParam(value = "random", defaultValue = "false") Boolean random) {
         if (bindingResult.hasErrors()) {
             return PROFILE_PAGE;
         }

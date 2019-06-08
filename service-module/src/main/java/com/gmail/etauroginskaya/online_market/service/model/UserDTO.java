@@ -9,22 +9,26 @@ import javax.validation.constraints.Size;
 
 public class UserDTO {
 
+    public interface New{}
+
+    public interface Update{}
+
     private Long id;
 
-    @NotBlank
-    @Size(max = 40)
-    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!")
+    @NotBlank(groups = {New.class, Update.class})
+    @Size(max = 40, groups = {New.class, Update.class})
+    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!", groups = {New.class, Update.class})
     private String surname;
 
-    @NotBlank
-    @Size(max = 20)
-    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!")
+    @NotBlank(groups = {New.class, Update.class})
+    @Size(max = 20, groups = {New.class, Update.class})
+    @Pattern(regexp = "[A-Za-z]+", message = "only Latin characters must be used!", groups = {New.class, Update.class})
     private String name;
 
-    @NotBlank
-    @Size(max = 50)
-    @Email
-    @UniqueEmail
+    @NotBlank(groups = {New.class})
+    @Size(max = 50, groups = {New.class})
+    @Email(groups = {New.class})
+    @UniqueEmail(groups = {New.class})
     private String email;
 
     private String password;

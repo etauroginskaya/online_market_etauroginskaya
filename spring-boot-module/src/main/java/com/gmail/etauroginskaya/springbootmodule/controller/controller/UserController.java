@@ -9,13 +9,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.validation.Valid;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @PostMapping(USERS_ADD_URL)
-    public String addUser(@Valid @ModelAttribute(name = "user") UserDTO userDTO,
+    public String addUser(@Validated(UserDTO.New.class) @ModelAttribute(name = "user") UserDTO userDTO,
                           BindingResult bindingResult,
                           Model model) {
         if (bindingResult.hasErrors()) {

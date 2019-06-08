@@ -104,8 +104,8 @@ public class ItemController {
 
     @PostMapping(ITEMS_UPLOAD_FILE_URL)
     public String uploadItemsFromFile(@Valid @ModelAttribute(name = "uploadedFile") FileDTO file,
-                                      RedirectAttributes redirectAttributes,
-                                      BindingResult bindingResult) {
+                                      BindingResult bindingResult,
+                                      RedirectAttributes redirectAttributes) {
         if (bindingResult.hasErrors()) {
             return ITEM_UPLOAD_PAGE;
         }
